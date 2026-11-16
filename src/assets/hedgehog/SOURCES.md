@@ -18,3 +18,18 @@
 | heart.png | icons/icons-0.png | 吹き出しのハート |
 
 表示用には Astro のビルド時に WebP へ縮小変換される（元 PNG はこのフォルダに保持）。
+
+## WO-SITE-03 で追加（2026-11-17 コピー、元ファイルは無変更）
+
+| サイト内のファイル | 元ファイル | 用途 |
+| --- | --- | --- |
+| lost.png | sniff/sniff-0.png | 404 の迷子のハリネズミ（くんくん） |
+| lost-found.png | sniff/sniff-2.png | 404 の迷子のハリネズミ（タップでにっこり） |
+
+`public/` の配信用画像（ビルドで変換されず、そのままのパスで配信）：
+
+| ファイル | 元素材 | 加工 |
+| --- | --- | --- |
+| ogp.jpg（1200×630） | `sources/diecut_sugiyama.psd`（杉山の原画、単一レイヤー） | レイヤーの透過をそのまま読み出し、高さ 540px に縮小して紙色 #F2EBE6 の中央に配置。絵の改変なし |
+| favicon.ico（16/32/48）・favicon-32x32.png | `assets/sprites/front/front-0.png`（hero.png と同じ） | 縮小のみ（透過） |
+| apple-touch-icon.png（180×180） | 同上 | 縮小して紙色背景に配置（iOS は透過を黒にするため） |

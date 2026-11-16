@@ -1,9 +1,10 @@
 ---
 // サイト共通レイアウト（WO-SITE-01 のトップ試作レイアウトを全ページ共通化：WO-SITE-02）
 // ヘッダー（ブランド＋ハリネズミ＋ナビ）とフッター（リンク集）は全ページ共通。
+// OGP 画像・ファビコンは public/ に固定名で置く（WO-SITE-03）。
+//   ogp.jpg：杉山の原画（diecut_sugiyama.psd）を紙色の 1200×630 に配置したもの
+//   favicon.ico / favicon-32x32.png / apple-touch-icon.png：MV の正面スプライト（ヘッダーと同じ絵）
 import '../styles/site.css';
-import faviconUrl from '../assets/favicon.ico?url';
-import touchIconUrl from '../assets/apple-touch-icon-180x180.png?url';
 import SiteHeader, { type PageKey } from '../components/site/SiteHeader.astro';
 import SiteFooter from '../components/site/SiteFooter.astro';
 
@@ -13,9 +14,12 @@ interface Props {
 	page: PageKey;
 	/** フッターのリンク集を出すか（Contact はページ本文にリンク集があるので出さない） */
 	footerLinks?: boolean;
+	/** 検索結果に出さないページ（404 など）。canonical / og:url も出さない */
+	noindex?: boolean;
 }
-const { title, description, page, footerLinks = true } = Astro.props;
+const { title, description, page, footerLinks = true, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/ogp.jpg', Astro.site);
 ---
 
 <!doctype html>
@@ -25,13 +29,23 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#f2ebe6" />
-		<link rel="canonical" href={canonical} />
+		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content={canonical} />
-		<link rel="icon" href={faviconUrl} sizes="32x32" />
-		<link rel="apple-touch-icon" href={touchIconUrl} />
+		{!noindex && <meta property="og:url" content={canonical} />}
+		<meta property="og:site_name" content="榑田いつき｜KURETA Itsuki" />
+		<meta property="og:locale" content="ja_JP" />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="おなかを見せて笑うハリネズミの杉山" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>

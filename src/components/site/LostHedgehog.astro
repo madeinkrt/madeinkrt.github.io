@@ -1,0 +1,16 @@
+---
+// 仕掛け⑦（404 ページ）：迷子のハリネズミ
+//  くんくん道をさがしている。タップするとにっこりして「いっしょにもどろう！」と言う。
+import { Image } from 'astro:assets';
+import lost from '../../assets/hedgehog/lost.png';
+import lostFound from '../../assets/hedgehog/lost-found.png';
+---
+
+<button type="button" class="hh hh--lost" data-hh="lost" aria-label="迷子のハリネズミ（タップすると返事をします）">
+	<span class="hh__q" aria-hidden="true">?</span>
+	<span class="hh__bubble" aria-hidden="true">いっしょにもどろう！</span>
+	<span class="hh__jump">
+		<Image class="hh__img" src={lost} alt="" width={150} densities={[1, 2]} loading="eager" />
+		<Image class="hh__img hh__img--alt" src={lostFound} alt="" width={150} densities={[1, 2]} loading="eager" />
+	</span>
+</button>

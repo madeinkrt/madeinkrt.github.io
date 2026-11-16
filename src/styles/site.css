@@ -1195,3 +1195,63 @@ a.pill:focus-visible,
 		padding: 0;
 	}
 }
+
+/* ════════════════════════════════════════════
+   WO-SITE-03：404（迷子のハリネズミ）
+   ════════════════════════════════════════════ */
+.notfound__panel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 16px;
+	padding: 40px 20px 22px;
+	text-align: center;
+}
+.notfound__text span {
+	display: inline-block;
+}
+.notfound__text {
+	margin: 18px 0 0;
+	font-size: 0.95rem;
+}
+.notfound__back {
+	margin: 10px 0 0;
+	font-weight: 700;
+}
+.notfound__back a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	padding: 0 6px;
+	text-decoration: underline wavy var(--pink);
+	text-underline-offset: 6px;
+}
+.notfound__back a:focus-visible {
+	outline: 3px solid var(--pink-deep);
+	outline-offset: 2px;
+}
+.hh--lost {
+	width: 150px;
+}
+.hh--lost .hh__jump {
+	transform-origin: 50% 100%;
+}
+.hh__q {
+	position: absolute;
+	top: -18px;
+	left: 2px;
+	color: var(--pink-deep);
+	font-size: 1.5rem;
+	font-weight: 800;
+	line-height: 1;
+	transform: rotate(-12deg);
+	transition: opacity 0.2s;
+}
+.hh--lost.is-alt .hh__q {
+	opacity: 0;
+}
+.hh--lost .hh__bubble {
+	left: 50%;
+	bottom: calc(100% + 4px);
+	translate: -50% 0;
+}

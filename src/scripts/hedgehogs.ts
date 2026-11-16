@@ -142,6 +142,17 @@ if (hidden) {
 	});
 }
 
+// ── ⑦ 404 の迷子のハリネズミ ───────────────────────────
+const lost = document.querySelector<HTMLButtonElement>('[data-hh="lost"]');
+if (lost) {
+	const jump = lost.querySelector('.hh__jump')!;
+	jump.addEventListener('animationend', () => jump.classList.remove('is-pop'));
+	lost.addEventListener('click', () => {
+		flash(lost, 'is-alt', 2600);
+		if (!reduced()) replay(jump, 'is-pop');
+	});
+}
+
 // ── ⑥ 浮かぶ音符：見えている間だけ動かす ─────────────────────
 document.querySelectorAll('[data-motifs]').forEach((el) => {
 	new IntersectionObserver(([e]) => el.classList.toggle('is-playing', e.isIntersecting)).observe(el);

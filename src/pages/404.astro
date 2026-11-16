@@ -1,0 +1,25 @@
+---
+// 404（存在しない URL）。GitHub Pages は dist/404.html を自動で返す。WO-SITE-03
+import SiteLayout from '../layouts/SiteLayout.astro';
+import LostHedgehog from '../components/site/LostHedgehog.astro';
+---
+
+<SiteLayout
+	title="ページが見つかりません｜榑田いつき KURETA Itsuki"
+	description="おさがしのページは見つかりませんでした。"
+	page="notfound"
+	noindex
+>
+	<main class="page-main notfound">
+		<h1 class="section__heading page-title">
+			<span class="section__en" lang="en">404</span>
+			<span class="section__ja">ページが見つかりません</span>
+		</h1>
+
+		<div class="panel notfound__panel">
+			<LostHedgehog />
+			<p class="notfound__text"><span>おさがしのページは、</span><span>引っ越したか、</span><span>なくなってしまったようです。</span></p>
+			<p class="notfound__back"><a href="/">トップへもどる<span aria-hidden="true"> →</span></a></p>
+		</div>
+	</main>
+</SiteLayout>
