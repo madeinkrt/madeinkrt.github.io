@@ -1,0 +1,13 @@
+---
+// 仕掛け③：画面の右端から顔を出すハリネズミ
+//  MUSIC 欄までスクロールすると、画面の端からそっと顔を出す。
+//  タップすると「びくっ」として引っ込み、しばらくするとまた顔を出す。
+import { Image } from 'astro:assets';
+import peek from '../../assets/hedgehog/peek.png';
+---
+
+<button type="button" class="hh hh--peek" data-hh="peek" aria-label="画面の端からのぞいているハリネズミ">
+	<span class="hh__slide">
+		<Image class="hh__img" src={peek} alt="" width={120} densities={[1, 2]} />
+	</span>
+</button>

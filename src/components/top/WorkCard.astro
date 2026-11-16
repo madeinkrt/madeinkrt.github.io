@@ -1,0 +1,50 @@
+---
+// MUSIC 欄の作品カード。ジャケット画像の置き場と鑑賞リンクの置き場を持つ。
+// 仕掛け⑦（モチーフ）：ホバー／タップで軽く浮き上がる（CSS のみ）。
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import LinkPill from './LinkPill.astro';
+
+interface Props {
+	work: CollectionEntry<'works'>;
+}
+const { work } = Astro.props;
+const { title, label, jacket, links } = work.data;
+const { Content } = await render(work);
+const hasBody = !!work.body?.trim();
+---
+
+<article class="work-card">
+	<div class="work-card__jacket">
+		{
+			jacket ? (
+				<Image src={jacket} alt={`『${title}』ジャケット`} width={360} densities={[1, 2]} />
+			) : (
+				<div class="jacket-placeholder" role="img" aria-label="ジャケット画像は準備中です">
+					<span>JACKET</span>
+					<small>準備中</small>
+				</div>
+			)
+		}
+	</div>
+	<div class="work-card__body">
+		{label && <p class="work-card__label">{label}</p>}
+		<h3 class="work-card__title">{title}</h3>
+		{
+			hasBody && (
+				<div class="work-card__text">
+					<Content />
+				</div>
+			)
+		}
+		{
+			links.length > 0 && (
+				<div class="work-card__links">
+					{links.map((l) => (
+						<LinkPill label={l.label} url={l.url} />
+					))}
+				</div>
+			)
+		}
+	</div>
+</article>

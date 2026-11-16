@@ -1,0 +1,8 @@
+[
+	{ "id": "x", "label": "X", "url": "https://x.com/made_by_KRT", "order": 1 },
+	{ "id": "niconico", "label": "niconico", "url": "", "order": 2 },
+	{ "id": "youtube", "label": "YouTube", "url": "", "order": 3 },
+	{ "id": "tiktok", "label": "TikTok", "url": "", "order": 4 },
+	{ "id": "pixiv", "label": "pixiv", "url": "https://www.pixiv.net/users/45369565", "order": 5 },
+	{ "id": "litlink", "label": "lit.link", "url": "", "order": 6 }
+]

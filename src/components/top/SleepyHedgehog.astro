@@ -1,0 +1,16 @@
+---
+// 仕掛け④：お知らせ欄で眠っているハリネズミ
+//  タップすると半目で起きて「……まだねむい」と言い、また眠る。
+import { Image } from 'astro:assets';
+import sleep from '../../assets/hedgehog/sleep.png';
+import sleepGrumpy from '../../assets/hedgehog/sleep-grumpy.png';
+---
+
+<button type="button" class="hh hh--sleepy" data-hh="sleepy" aria-label="眠っているハリネズミ（タップすると起きます）">
+	<span class="hh__zz" aria-hidden="true">z<span>z</span></span>
+	<span class="hh__bubble" aria-hidden="true">……まだねむい</span>
+	<span class="hh__jump">
+		<Image class="hh__img" src={sleep} alt="" width={96} densities={[1, 2]} />
+		<Image class="hh__img hh__img--alt" src={sleepGrumpy} alt="" width={96} densities={[1, 2]} />
+	</span>
+</button>

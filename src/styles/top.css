@@ -1,0 +1,814 @@
+/* トップページ（試作 WO-SITE-01）専用スタイル
+   配色は『はりねずみの杉山』MV のスタイルシートに合わせる：
+   紙 #F2EBE6 / 茶色の線 #4E3B33 / 針のグレー #6F6A66 / クリーム #EFE3D3 / 耳のピンク #D9A3A0 */
+
+:root {
+	--paper: #f2ebe6;
+	--paper-deep: #e9dfd7;
+	--card: #fbf8f5;
+	--ink: #4e3b33;
+	--ink-soft: #7a675d;
+	--ink-muted: #8c7b71;
+	--line: #e2d6cc;
+	--pink: #d9a3a0;
+	--pink-soft: #f6dcd8;
+	--pink-deep: #9a524c;
+	--sage: #4f8274;
+	--radius: 18px;
+	--content: 960px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body.top {
+	margin: 0;
+	background: var(--paper);
+	color: var(--ink);
+	font-family: 'M PLUS Rounded 1c', 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic',
+		'Yu Gothic UI', Meiryo, system-ui, sans-serif;
+	font-size: 16px;
+	line-height: 1.8;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body.top a {
+	color: inherit;
+}
+
+.proto-note {
+	margin: 0;
+	padding: 4px 12px;
+	background: var(--paper-deep);
+	color: var(--ink-soft);
+	font-size: 0.75rem;
+	text-align: center;
+}
+
+/* ── ヘッダー ───────────────────────── */
+.site-header__inner {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 12px;
+	max-width: calc(var(--content) + 40px);
+	margin: 0 auto;
+	padding: 28px 20px 4px;
+}
+
+.brand__name {
+	margin: 0;
+	font-size: clamp(1.7rem, 7.4vw, 2.6rem);
+	line-height: 1.3;
+	font-weight: 800;
+	letter-spacing: 0.04em;
+}
+.brand__sep {
+	color: var(--pink);
+	font-weight: 400;
+}
+.brand__en {
+	display: inline-block;
+	font-size: 0.5em;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	color: var(--ink-soft);
+}
+.brand__tagline {
+	margin: 6px 0 0;
+	font-size: 0.82rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	color: var(--sage);
+}
+@media (max-width: 639px) {
+	.brand__sep {
+		display: none;
+	}
+	.brand__en {
+		display: block;
+		font-size: 0.48em;
+	}
+	.brand__tagline {
+		font-size: 0.74rem;
+		letter-spacing: 0.04em;
+	}
+}
+
+.site-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	max-width: calc(var(--content) + 40px);
+	margin: 0 auto;
+	padding: 12px 20px 0;
+}
+.site-nav a {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding: 4px 14px;
+	border: 1.5px solid var(--line);
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.55);
+	font-size: 0.85rem;
+	font-weight: 700;
+	line-height: 1.25;
+	text-decoration: none;
+}
+.site-nav a span {
+	font-size: 0.66rem;
+	letter-spacing: 0.14em;
+	color: var(--sage);
+}
+@media (hover: hover) {
+	.site-nav a:hover {
+		background: #fff;
+		border-color: var(--pink);
+	}
+}
+
+/* ── セクション共通 ─────────────────────── */
+.section {
+	padding: 40px 20px 8px;
+}
+.section > *:not(.hh--peek) {
+	max-width: var(--content);
+	margin-inline: auto;
+}
+
+.section__heading {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 4px 12px;
+	margin-top: 0;
+	margin-bottom: 20px;
+	font-weight: normal;
+}
+.section__en {
+	font-family: ui-rounded, 'Arial Rounded MT Bold', 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', system-ui,
+		sans-serif;
+	font-size: 1.55rem;
+	font-weight: 800;
+	letter-spacing: 0.08em;
+	text-decoration: underline wavy var(--pink);
+	text-decoration-thickness: 2px;
+	text-underline-offset: 9px;
+}
+.section__ja {
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: var(--ink-soft);
+}
+
+/* ── NEXT RELEASE ───────────────────── */
+.next-card {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 4px;
+	align-items: center;
+	padding: 16px 20px 24px;
+	border: 1.5px solid var(--line);
+	border-radius: 24px;
+	background: var(--card);
+	text-align: center;
+}
+.next-card__visual {
+	position: relative;
+	width: 190px;
+	margin-inline: auto;
+	padding: 22px 14px 0;
+}
+.next-card__img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+.next-card__label {
+	margin: 0;
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	color: var(--sage);
+}
+.next-card__title {
+	margin: 0 0 10px;
+	font-size: clamp(1.5rem, 6.4vw, 2.1rem);
+	font-weight: 800;
+	line-height: 1.4;
+}
+.next-card__text p {
+	margin: 12px 0 0;
+	font-size: 0.92rem;
+}
+.target-badge {
+	display: inline-block;
+	margin: 0;
+	padding: 3px 14px;
+	border-radius: 999px;
+	background: var(--pink-soft);
+	color: var(--pink-deep);
+	font-size: 0.9rem;
+	font-weight: 700;
+}
+.target-badge--small {
+	padding: 1px 10px;
+	font-size: 0.78rem;
+}
+@media (min-width: 640px) {
+	.next-card {
+		grid-template-columns: 230px 1fr;
+		gap: 24px;
+		padding: 24px 36px;
+		text-align: left;
+	}
+}
+
+.later-list {
+	list-style: none;
+	margin-top: 14px;
+	margin-bottom: 0;
+	padding: 0 4px;
+	font-size: 0.9rem;
+}
+.later-list li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 10px;
+}
+.later-list__lead {
+	color: var(--ink-soft);
+	font-size: 0.8rem;
+}
+.later-list [lang='en'] {
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	color: var(--sage);
+}
+.later-list__title {
+	font-weight: 700;
+}
+
+/* 浮かぶ音符（⑥）：見えている間だけ再生 */
+.motifs {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+.motif {
+	position: absolute;
+	height: auto;
+	animation: motif-float 6s ease-in-out infinite;
+	animation-play-state: paused;
+}
+.motifs.is-playing .motif {
+	animation-play-state: running;
+}
+.motif--1 {
+	width: 30px;
+	left: 0;
+	top: 18%;
+}
+.motif--2 {
+	width: 22px;
+	right: 6%;
+	top: 0;
+	animation-duration: 7s;
+	animation-delay: -2.5s;
+}
+.motif--3 {
+	width: 22px;
+	right: -2%;
+	top: 52%;
+	animation-duration: 5.5s;
+	animation-delay: -4s;
+}
+@keyframes motif-float {
+	0%,
+	100% {
+		transform: translateY(0) rotate(-8deg);
+	}
+	50% {
+		transform: translateY(-10px) rotate(6deg);
+	}
+}
+
+/* ── MUSIC ─────────────────────────── */
+.music {
+	position: relative;
+	overflow-x: hidden;
+}
+@supports (overflow: clip) {
+	.music {
+		overflow-x: clip;
+	}
+}
+
+.work-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 14px;
+}
+.work-card {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 12px;
+	border: 1.5px solid var(--line);
+	border-radius: var(--radius);
+	background: var(--card);
+	box-shadow: 0 2px 0 rgba(78, 59, 51, 0.05);
+	transition:
+		transform 0.25s ease,
+		box-shadow 0.25s ease;
+}
+/* ⑦ ジャケットカードがふわっと浮く（マウスはホバー、スマホは押している間） */
+@media (hover: hover) {
+	.work-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 22px -14px rgba(78, 59, 51, 0.45);
+	}
+}
+.work-card:focus-within,
+.work-card:active {
+	transform: translateY(-4px);
+	box-shadow: 0 12px 22px -14px rgba(78, 59, 51, 0.45);
+}
+.work-card__jacket {
+	flex: 0 0 96px;
+	aspect-ratio: 1;
+	border-radius: 12px;
+	overflow: hidden;
+}
+.work-card__jacket img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.jacket-placeholder {
+	display: grid;
+	place-content: center;
+	width: 100%;
+	height: 100%;
+	border: 1.5px dashed #d4c4b8;
+	border-radius: 12px;
+	background: repeating-linear-gradient(45deg, #efe5dc 0 10px, #f6efe9 10px 20px);
+	color: var(--ink-muted);
+	text-align: center;
+	line-height: 1.4;
+}
+.jacket-placeholder span {
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+}
+.jacket-placeholder small {
+	font-size: 0.7rem;
+}
+.work-card__body {
+	min-width: 0;
+}
+.work-card__label {
+	margin: 0;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	color: var(--sage);
+}
+.work-card__title {
+	margin: 0 0 8px;
+	font-size: 1.2rem;
+	font-weight: 800;
+	line-height: 1.4;
+}
+.work-card__text p {
+	margin: 0 0 8px;
+	font-size: 0.88rem;
+}
+.work-card__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+.work-card__links .pill {
+	min-height: 34px;
+	padding: 3px 12px;
+	font-size: 0.8rem;
+}
+@media (min-width: 640px) {
+	.work-grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+	}
+	.work-card {
+		flex-direction: column;
+		align-items: stretch;
+		padding: 14px;
+	}
+	.work-card__jacket {
+		flex: none;
+		width: 100%;
+	}
+	.work-card__body {
+		padding: 0 4px 4px;
+	}
+}
+
+/* ── リンクボタン ───────────────────── */
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	min-height: 44px;
+	padding: 6px 18px;
+	border: 1.5px solid var(--ink);
+	border-radius: 999px;
+	background: var(--ink);
+	color: #fff8f2 !important;
+	font-size: 0.9rem;
+	font-weight: 700;
+	line-height: 1.3;
+	text-decoration: none;
+}
+@media (hover: hover) {
+	a.pill:hover {
+		background: #6b5247;
+	}
+}
+a.pill:focus-visible,
+.site-nav a:focus-visible {
+	outline: 3px solid var(--pink-deep);
+	outline-offset: 2px;
+}
+/* 準備中（押せない）：点線・薄色・手触りのない見た目にして、本物のボタンと区別する */
+.pill--pending {
+	border: 1.5px dashed #cdbfb4;
+	background: transparent;
+	color: var(--ink-muted) !important;
+	font-weight: 500;
+	cursor: default;
+}
+.pill--pending small {
+	font-size: 0.72em;
+}
+
+/* ── NEWS ──────────────────────────── */
+.news-box {
+	position: relative;
+	padding: 6px 20px 10px;
+	border: 1.5px solid var(--line);
+	border-radius: var(--radius);
+	background: var(--card);
+}
+.news-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.news-item {
+	padding: 14px 0;
+	border-bottom: 1.5px dashed var(--line);
+}
+.news-item:last-child {
+	border-bottom: 0;
+}
+.news-item time {
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	color: var(--ink-soft);
+}
+.news-item__title {
+	margin: 0;
+	font-weight: 700;
+	line-height: 1.6;
+}
+.news-item__text p {
+	margin: 2px 0 0;
+	font-size: 0.9rem;
+	color: var(--ink-soft);
+}
+
+/* ── フッター ───────────────────────── */
+.site-footer {
+	margin-top: 56px;
+	padding: 36px 20px 20px;
+	background: var(--paper-deep);
+}
+.site-footer > * {
+	max-width: var(--content);
+	margin-inline: auto;
+}
+.section__heading--footer .section__en {
+	font-size: 1.25rem;
+}
+.link-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+	list-style: none;
+}
+.site-footer__bottom {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 12px;
+	margin-top: 28px;
+}
+.copyright {
+	margin: 0;
+	font-size: 0.8rem;
+	color: var(--ink-soft);
+}
+
+/* ── ハリネズミ共通 ───────────────────── */
+.hh {
+	position: relative;
+	display: block;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
+}
+.hh:focus-visible {
+	outline: 3px dashed var(--pink-deep);
+	outline-offset: 4px;
+	border-radius: 24px;
+}
+.hh__jump,
+.hh__lean,
+.hh__slide {
+	display: block;
+	position: relative;
+}
+.hh__img {
+	display: block;
+	width: 100%;
+	height: auto;
+	pointer-events: none;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+/* 表情差分：同じ枠の中で下揃えにして重ね、クラスで切り替える */
+.hh__img--alt {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: 50% 100%;
+	opacity: 0;
+}
+.hh.is-alt .hh__img--alt {
+	opacity: 1;
+}
+.hh.is-alt .hh__img:not(.hh__img--alt) {
+	opacity: 0;
+}
+
+.hh__bubble {
+	position: absolute;
+	z-index: 3;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 3px 10px;
+	border: 1.5px solid var(--ink);
+	border-radius: 12px;
+	background: #fff;
+	color: var(--ink);
+	font-size: 0.78rem;
+	font-weight: 700;
+	line-height: 1.5;
+	white-space: nowrap;
+	opacity: 0;
+	transform: translateY(4px) scale(0.9);
+	transition:
+		opacity 0.2s ease,
+		transform 0.25s ease;
+	pointer-events: none;
+}
+.hh.is-alt .hh__bubble {
+	opacity: 1;
+	transform: none;
+}
+
+/* ①② ヘッダーのハリネズミ */
+.hh--hero {
+	flex: 0 0 auto;
+	width: 104px;
+	margin-bottom: -6px;
+}
+@media (min-width: 640px) {
+	.hh--hero {
+		width: 132px;
+	}
+}
+.hh--hero .hh__lean {
+	transform: translateX(var(--shift, 0px)) rotate(var(--lean, 0deg));
+	transform-origin: 50% 92%;
+	transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hh__jump.is-jumping {
+	transform-origin: 50% 100%;
+	animation: hh-jump 0.62s ease-out;
+}
+@keyframes hh-jump {
+	0% {
+		transform: translateY(0) scale(1, 1);
+	}
+	15% {
+		transform: translateY(0) scale(1.08, 0.9);
+	}
+	45% {
+		transform: translateY(-26px) scale(0.96, 1.05);
+	}
+	72% {
+		transform: translateY(0) scale(1.06, 0.94);
+	}
+	86% {
+		transform: translateY(-4px) scale(1, 1);
+	}
+	100% {
+		transform: none;
+	}
+}
+.pop-note {
+	position: absolute;
+	left: 50%;
+	top: 4%;
+	width: 24px;
+	height: auto;
+	opacity: 0;
+	pointer-events: none;
+	animation: note-pop 1s ease-out forwards;
+}
+@keyframes note-pop {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, 0) scale(0.4);
+	}
+	20% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		transform: translate(calc(-50% + var(--dx, 0px)), -58px) rotate(var(--rot, 0deg)) scale(1);
+	}
+}
+
+/* ③ 画面の端から顔を出すハリネズミ */
+.hh--peek {
+	position: absolute;
+	top: 30px;
+	right: 0;
+	z-index: 2;
+	width: 112px;
+}
+.hh--peek .hh__slide {
+	transform: translateX(110%) rotate(-10deg);
+	transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hh--peek.is-out .hh__slide,
+.hh--peek:focus-visible .hh__slide {
+	transform: translateX(36%) rotate(-10deg);
+}
+.hh--peek.is-out.is-hiding .hh__slide {
+	transform: translateX(115%) rotate(6deg);
+	transition: transform 0.22s ease-in;
+}
+@media (min-width: 640px) {
+	.hh--peek {
+		top: 22px;
+		width: 132px;
+	}
+}
+
+/* ④ 眠っているハリネズミ（お知らせ箱の上で寝ている） */
+.hh--sleepy {
+	position: absolute;
+	top: -62px;
+	right: 14px;
+	width: 92px;
+}
+.hh__zz {
+	position: absolute;
+	top: -4px;
+	left: -6px;
+	color: var(--ink-muted);
+	font-size: 0.85rem;
+	font-weight: 800;
+	font-style: italic;
+	line-height: 1;
+	transition: opacity 0.2s;
+}
+.hh__zz span {
+	position: relative;
+	top: -8px;
+	left: 2px;
+	font-size: 1.15em;
+}
+.hh--sleepy.is-alt .hh__zz {
+	opacity: 0;
+}
+.hh--sleepy .hh__bubble {
+	right: 8px;
+	bottom: calc(100% - 2px);
+}
+.hh__jump.is-wiggle {
+	transform-origin: 50% 100%;
+	animation: hh-wiggle 0.5s ease-in-out;
+}
+@keyframes hh-wiggle {
+	0%,
+	100% {
+		transform: rotate(0);
+	}
+	20% {
+		transform: rotate(-5deg);
+	}
+	45% {
+		transform: rotate(4deg);
+	}
+	70% {
+		transform: rotate(-2deg);
+	}
+}
+
+/* ⑤ フッターの隠れハリネズミ */
+.hh--hidden {
+	flex: 0 0 auto;
+	width: 46px;
+	padding: 2px;
+	opacity: 0.8;
+	transition: opacity 0.2s;
+}
+.hh--hidden.is-alt {
+	opacity: 1;
+}
+.hh--hidden .hh__jump {
+	transform-origin: 50% 100%;
+	transition: transform 0.3s ease;
+}
+.hh--hidden.is-alt .hh__jump {
+	transform: scale(1.35);
+}
+.hh--hidden .hh__bubble {
+	right: 0;
+	bottom: calc(100% + 6px);
+}
+.hh__heart {
+	width: 16px;
+	height: auto;
+}
+.hh__jump.is-pop {
+	transform-origin: 50% 100%;
+	animation: hh-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes hh-pop {
+	0% {
+		transform: scale(1);
+	}
+	35% {
+		transform: translateY(-10px) scale(1.25);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+/* ── 動きを減らす設定：すべて静止（表情の切り替えのみ残す） ── */
+@media (prefers-reduced-motion: reduce) {
+	body.top *,
+	body.top *::before,
+	body.top *::after {
+		animation: none !important;
+		transition: none !important;
+	}
+	.work-card:hover,
+	.work-card:focus-within,
+	.work-card:active {
+		transform: none !important;
+	}
+	.hh--hero .hh__lean {
+		transform: none !important;
+	}
+}

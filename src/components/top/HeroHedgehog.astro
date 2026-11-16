@@ -1,0 +1,26 @@
+---
+// 仕掛け①②：ヘッダーのハリネズミ
+//  ① タップ／クリックすると跳ねて「><」顔になり、音符がぽんと出る
+//  ② 指やカーソルの方向へ少しだけ体を傾ける（タッチ端末はタップした方向へ）
+import { Image, getImage } from 'astro:assets';
+import hero from '../../assets/hedgehog/hero.png';
+import heroHappy from '../../assets/hedgehog/hero-happy.png';
+import note from '../../assets/hedgehog/note.png';
+
+const noteImg = await getImage({ src: note, width: 56, format: 'webp' });
+---
+
+<button
+	type="button"
+	class="hh hh--hero"
+	data-hh="hero"
+	data-note-src={noteImg.src}
+	aria-label="ハリネズミの杉山（タップすると跳ねます）"
+>
+	<span class="hh__lean">
+		<span class="hh__jump">
+			<Image class="hh__img" src={hero} alt="" width={132} densities={[1, 2]} loading="eager" fetchpriority="high" />
+			<Image class="hh__img hh__img--alt" src={heroHappy} alt="" width={132} densities={[1, 2]} loading="eager" />
+		</span>
+	</span>
+</button>

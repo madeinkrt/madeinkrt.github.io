@@ -1,0 +1,13 @@
+---
+// 仕掛け⑥（モチーフ）：音符ときらきらが、ふわっと浮かぶ
+//  NEXT RELEASE 欄の中だけで、画面に見えている間だけ動く（見えないときは停止）。
+import { Image } from 'astro:assets';
+import note from '../../assets/hedgehog/note.png';
+import sparkle from '../../assets/hedgehog/sparkle.png';
+---
+
+<span class="motifs" aria-hidden="true" data-motifs>
+	<Image class="motif motif--1" src={note} alt="" width={30} densities={[1, 2]} />
+	<Image class="motif motif--2" src={sparkle} alt="" width={22} densities={[1, 2]} />
+	<Image class="motif motif--3" src={note} alt="" width={22} densities={[1, 2]} />
+</span>

@@ -1,0 +1,20 @@
+---
+// 仕掛け⑤：フッターの隠れハリネズミ（イースターエッグ）
+//  フッターの隅に、丸まった小さな毛玉がいる。見つけてタップすると
+//  ころんと起き上がって手をふり、ハートを出す。
+import { Image } from 'astro:assets';
+import ball from '../../assets/hedgehog/ball.png';
+import wave from '../../assets/hedgehog/wave.png';
+import heart from '../../assets/hedgehog/heart.png';
+---
+
+<button type="button" class="hh hh--hidden" data-hh="hidden" aria-label="フッターのすみの小さな毛玉">
+	<span class="hh__bubble" aria-hidden="true">
+		<Image class="hh__heart" src={heart} alt="" width={16} densities={[1, 2]} />
+		みつかっちゃった！
+	</span>
+	<span class="hh__jump">
+		<Image class="hh__img" src={ball} alt="" width={44} densities={[1, 2]} />
+		<Image class="hh__img hh__img--alt" src={wave} alt="" width={44} densities={[1, 2]} />
+	</span>
+</button>

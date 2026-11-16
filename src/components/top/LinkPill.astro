@@ -1,0 +1,23 @@
+---
+// リンクの小さなボタン。url が空なら「準備中」として押せない見た目で出す
+// （リンク先が空のボタンを本物のように見せないため）。
+interface Props {
+	label: string;
+	url?: string;
+}
+const { label, url } = Astro.props;
+const isExternal = !!url && /^https?:\/\//.test(url);
+---
+
+{
+	url ? (
+		<a class="pill" href={url} {...(isExternal ? { target: '_blank', rel: 'noopener' } : {})}>
+			{label}
+		</a>
+	) : (
+		<span class="pill pill--pending" aria-disabled="true" title="リンク先は準備中です">
+			{label}
+			<small>準備中</small>
+		</span>
+	)
+}
