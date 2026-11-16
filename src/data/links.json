@@ -1,8 +1,18 @@
 [
-	{ "id": "x", "label": "X", "url": "https://x.com/made_by_KRT", "order": 1 },
-	{ "id": "niconico", "label": "niconico", "url": "", "order": 2 },
-	{ "id": "youtube", "label": "YouTube", "url": "", "order": 3 },
-	{ "id": "tiktok", "label": "TikTok", "url": "", "order": 4 },
-	{ "id": "pixiv", "label": "pixiv", "url": "https://www.pixiv.net/users/45369565", "order": 5 },
-	{ "id": "litlink", "label": "lit.link", "url": "", "order": 6 }
+	{ "id": "niconico", "label": "ニコニコ動画", "url": "https://sp.nicovideo.jp/user/83783017", "group": "main", "order": 1 },
+	{ "id": "youtube", "label": "YouTube", "url": "https://youtube.com/@made-in-krt", "group": "main", "order": 2 },
+	{ "id": "x", "label": "X", "url": "https://x.com/made_by_KRT", "group": "main", "order": 3 },
+	{ "id": "tiktok", "label": "TikTok", "url": "https://www.tiktok.com/@made_by_krt", "group": "main", "order": 4 },
+	{ "id": "pixiv", "label": "pixiv", "url": "https://www.pixiv.net/users/45369565", "group": "main", "order": 5 },
+	{ "id": "instagram", "label": "Instagram", "url": "https://www.instagram.com/made_in_krt/", "group": "other", "order": 11 },
+	{ "id": "threads", "label": "Threads", "url": "https://www.threads.com/@made_in_krt", "group": "other", "order": 12 },
+	{ "id": "bluesky", "label": "Bluesky", "url": "https://bsky.app/profile/madeinkrt.bsky.social", "group": "other", "order": 13 },
+	{ "id": "mastodon", "label": "Mastodon", "note": "mstdn.jp", "url": "https://mstdn.jp/@made_in_nkt", "group": "other", "order": 14 },
+	{ "id": "misskey", "label": "Misskey", "note": "misskey.io", "url": "https://misskey.io/@aawoo", "group": "other", "order": 15 },
+	{ "id": "note", "label": "note", "url": "https://note.com/madeinkrt", "group": "other", "order": 16 },
+	{ "id": "fanbox", "label": "FANBOX", "url": "https://madeinkrt.fanbox.cc/", "group": "other", "order": 17 },
+	{ "id": "tumblr", "label": "Tumblr", "url": "https://madeinkrt.tumblr.com/", "group": "other", "order": 18 },
+	{ "id": "twitch", "label": "Twitch", "url": "https://www.twitch.tv/made_in_nkt", "group": "other", "order": 19 },
+	{ "id": "twitcasting", "label": "ツイキャス", "url": "https://twitcasting.tv/made_by_krt", "group": "other", "order": 20 },
+	{ "id": "discord", "label": "Discord", "note": "サーバー招待", "url": "https://discord.gg/5wsFhFm94d", "group": "other", "order": 30 }
 ]

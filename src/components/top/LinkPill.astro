@@ -4,14 +4,16 @@
 interface Props {
 	label: string;
 	url?: string;
+	/** 読み上げ用の説明（例: 「『ランタナ』を YouTube で見る」） */
+	ariaLabel?: string;
 }
-const { label, url } = Astro.props;
+const { label, url, ariaLabel } = Astro.props;
 const isExternal = !!url && /^https?:\/\//.test(url);
 ---
 
 {
 	url ? (
-		<a class="pill" href={url} {...(isExternal ? { target: '_blank', rel: 'noopener' } : {})}>
+		<a class="pill" href={url} aria-label={ariaLabel} {...(isExternal ? { target: '_blank', rel: 'noopener' } : {})}>
 			{label}
 		</a>
 	) : (

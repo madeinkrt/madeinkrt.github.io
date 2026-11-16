@@ -1,8 +1,51 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-const pageTitle = "榑田いつき";
+// About（プロフィール）
+// ※ 紹介文は暫定（制作者の確認待ち）。経歴・受賞歴などは書かない。
+//   確定したら下の「暫定」表示（.draft-note）を外して文面を差し替える。
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getWorks } from '../lib/data';
+
+const { released } = await getWorks();
+const releasedText = released.map((w) => `${w.data.label ? `${w.data.label}` : ''}『${w.data.title}』`).join('、');
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-	<p>漫画や絵を描いています</p>
-</BaseLayout>
+<SiteLayout
+	title="About プロフィール｜榑田いつき KURETA Itsuki"
+	description="榑田いつき（KURETA Itsuki）のプロフィール。音楽・イラスト・アニメーション。"
+	page="about"
+>
+	<main class="page-main">
+		<h1 class="section__heading page-title">
+			<span class="section__en" lang="en">ABOUT</span>
+			<span class="section__ja">プロフィール</span>
+		</h1>
+
+		<div class="panel profile">
+			<p class="draft-note">暫定の紹介文です（内容を確認中）</p>
+			<p class="profile__name">榑田いつき<span lang="en">KURETA Itsuki</span></p>
+			<p class="profile__lead">音楽・イラスト・アニメーションをつくっています。</p>
+
+			<dl class="activity">
+				<div class="activity__item">
+					<dt lang="en">Music</dt>
+					<dd>
+						オリジナル曲を、ニコニコ動画と YouTube で発表しています。{releasedText && <Fragment>これまでに{releasedText}を発表しました。</Fragment>}
+					</dd>
+				</div>
+				<div class="activity__item">
+					<dt lang="en">Illustration</dt>
+					<dd>漫画や絵を描いています。</dd>
+				</div>
+				<div class="activity__item">
+					<dt lang="en">Animation</dt>
+					<dd>MV などのアニメーションをつくっています。</dd>
+				</div>
+			</dl>
+		</div>
+
+		<p class="more-link more-link--page">
+			<a href="/works/">作品一覧へ<span aria-hidden="true"> →</span></a>
+			<a href="/contact/">連絡先・リンク集へ<span aria-hidden="true"> →</span></a>
+		</p>
+	</main>
+</SiteLayout>

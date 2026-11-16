@@ -1,0 +1,53 @@
+---
+// 全ページ共通のヘッダー。
+//  - トップ：サイト名が h1。ハリネズミは大きめ。
+//  - 他ページ：サイト名はトップへのリンク（h1 は各ページの見出し）。ハリネズミは小さめ。
+// ハリネズミの仕掛け（タップで跳ねる／指の方向へ傾く）は全ページ共通。
+import HeroHedgehog from '../top/HeroHedgehog.astro';
+
+export type PageKey = 'home' | 'about' | 'works' | 'contact';
+interface Props {
+	page: PageKey;
+}
+const { page } = Astro.props;
+const isHome = page === 'home';
+
+const nav: { key: PageKey; href: string; en: string; ja: string }[] = [
+	...(isHome ? [] : [{ key: 'home' as const, href: '/', en: 'Top', ja: 'トップ' }]),
+	{ key: 'about', href: '/about/', en: 'About', ja: 'プロフィール' },
+	{ key: 'works', href: '/works/', en: 'Works', ja: '作品' },
+	{ key: 'contact', href: '/contact/', en: 'Contact', ja: '連絡先' },
+];
+const BrandTag = isHome ? 'h1' : 'p';
+// 区切り「｜」の前後に空白が入らないよう 1 行の固定 HTML にしている
+const brandHtml =
+	'<span class="brand__ja">榑田いつき</span><span class="brand__sep" aria-hidden="true">｜</span><span class="brand__en" lang="en">KURETA Itsuki</span>';
+---
+
+<header class:list={['site-header', { 'site-header--compact': !isHome }]}>
+	<div class="site-header__inner">
+		<div class="brand">
+			<BrandTag class="brand__name">
+				{
+					isHome ? (
+						<Fragment set:html={brandHtml} />
+					) : (
+						<a href="/" class="brand__link" set:html={brandHtml} />
+					)
+				}
+			</BrandTag>
+			<p class="brand__tagline" lang="en">Music · Illustration · Animation</p>
+		</div>
+		<HeroHedgehog />
+	</div>
+	<nav class="site-nav" aria-label="サイト内">
+		{
+			nav.map((n) => (
+				<a href={n.href} aria-current={n.key === page ? 'page' : undefined}>
+					<span lang="en">{n.en}</span>
+					{n.ja}
+				</a>
+			))
+		}
+	</nav>
+</header>

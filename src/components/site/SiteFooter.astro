@@ -1,0 +1,29 @@
+---
+// 全ページ共通のフッター：リンク集（主要＋その他は折りたたみ）とコピーライト、隠れハリネズミ。
+import SiteLinks from './SiteLinks.astro';
+import HiddenHedgehog from '../top/HiddenHedgehog.astro';
+
+interface Props {
+	showLinks?: boolean;
+}
+const { showLinks = true } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class:list={['site-footer', { 'site-footer--bare': !showLinks }]}>
+	{
+		showLinks && (
+			<Fragment>
+				<h2 class="section__heading section__heading--footer">
+					<span class="section__en" lang="en">LINKS</span>
+					<span class="section__ja">リンク</span>
+				</h2>
+				<SiteLinks variant="footer" />
+			</Fragment>
+		)
+	}
+	<div class="site-footer__bottom">
+		<p class="copyright">&copy; {year} 榑田いつき / <span lang="en">KURETA Itsuki</span></p>
+		<HiddenHedgehog />
+	</div>
+</footer>

@@ -1,8 +1,47 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-const pageTitle = "作品紹介";
+// Works（作品）：ディスコグラフィ。データは src/content/works（トップと共通）。
+// 各作品には作品 ID の id が付く（/works/#lantana）。将来の個別ページは /works/<ID>/ を想定。
+import SiteLayout from '../layouts/SiteLayout.astro';
+import WorkCard from '../components/top/WorkCard.astro';
+import { getWorks } from '../lib/data';
+
+const { released, upcoming } = await getWorks();
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-	<p>2025/06/01 COMITIA 152</p>
-</BaseLayout>
+<SiteLayout
+	title="Works 作品｜榑田いつき KURETA Itsuki"
+	description="榑田いつき（KURETA Itsuki）の作品一覧。既発表のシングルと制作中の作品。"
+	page="works"
+>
+	<main class="page-main">
+		<h1 class="section__heading page-title">
+			<span class="section__en" lang="en">WORKS</span>
+			<span class="section__ja">作品</span>
+		</h1>
+
+		<section class="page-section" aria-labelledby="released-heading">
+			<h2 class="sub-heading" id="released-heading">
+				<span lang="en">Released</span>既発表
+			</h2>
+			<div class="work-grid work-grid--tiles">
+				{released.map((w) => <WorkCard work={w} variant="tile" anchor />)}
+			</div>
+		</section>
+
+		{
+			upcoming.length > 0 && (
+				<section class="page-section" aria-labelledby="wip-heading">
+					<h2 class="sub-heading" id="wip-heading">
+						<span lang="en">In Production</span>制作中
+					</h2>
+					{/* 制作中はジャケット未定なので、大きな空枠を並べず横長カードで並べる */}
+					<div class="work-grid work-grid--wip">
+						{upcoming.map((w) => (
+							<WorkCard work={w} variant="row" anchor />
+						))}
+					</div>
+				</section>
+			)
+		}
+	</main>
+</SiteLayout>

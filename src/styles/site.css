@@ -1,4 +1,4 @@
-/* トップページ（試作 WO-SITE-01）専用スタイル
+/* サイト共通スタイル（WO-SITE-01 のトップ試作から全ページ共通化：WO-SITE-02）
    配色は『はりねずみの杉山』MV のスタイルシートに合わせる：
    紙 #F2EBE6 / 茶色の線 #4E3B33 / 針のグレー #6F6A66 / クリーム #EFE3D3 / 耳のピンク #D9A3A0 */
 
@@ -24,7 +24,7 @@
 	box-sizing: border-box;
 }
 
-body.top {
+body.site {
 	margin: 0;
 	background: var(--paper);
 	color: var(--ink);
@@ -36,7 +36,7 @@ body.top {
 	text-size-adjust: 100%;
 }
 
-body.top a {
+body.site a {
 	color: inherit;
 }
 
@@ -797,9 +797,9 @@ a.pill:focus-visible,
 
 /* ── 動きを減らす設定：すべて静止（表情の切り替えのみ残す） ── */
 @media (prefers-reduced-motion: reduce) {
-	body.top *,
-	body.top *::before,
-	body.top *::after {
+	body.site *,
+	body.site *::before,
+	body.site *::after {
 		animation: none !important;
 		transition: none !important;
 	}
@@ -810,5 +810,388 @@ a.pill:focus-visible,
 	}
 	.hh--hero .hh__lean {
 		transform: none !important;
+	}
+}
+
+/* ════════════════════════════════════════════
+   WO-SITE-02：全ページ共通化・Works／About／Contact
+   ════════════════════════════════════════════ */
+
+/* ── ヘッダー（トップ以外は小さめ） ───────────── */
+.brand__link {
+	text-decoration: none;
+}
+@media (hover: hover) {
+	.brand__link:hover .brand__ja {
+		text-decoration: underline wavy var(--pink);
+		text-underline-offset: 6px;
+	}
+}
+.site-header--compact .site-header__inner {
+	padding-top: 18px;
+}
+.site-header--compact .brand__name {
+	font-size: clamp(1.35rem, 5.6vw, 1.8rem);
+}
+.site-header--compact .hh--hero {
+	width: 76px;
+}
+@media (min-width: 640px) {
+	.site-header--compact .hh--hero {
+		width: 92px;
+	}
+}
+/* 下層ページはナビが 4 つになるので、スマホでも 1 行に収まるよう詰める */
+.site-header--compact .site-nav {
+	gap: 6px;
+}
+.site-header--compact .site-nav a {
+	padding-inline: 10px;
+}
+.site-footer--bare {
+	margin-top: 40px;
+	padding-top: 16px;
+}
+.site-footer--bare .site-footer__bottom {
+	margin-top: 0;
+}
+.site-nav a[aria-current='page'] {
+	border-color: var(--ink);
+	background: var(--ink);
+	color: #fff8f2;
+}
+.site-nav a[aria-current='page'] span {
+	color: var(--pink-soft);
+}
+
+/* ── トップ：ほかに制作中（日程なし） ─────────── */
+.wip-list {
+	list-style: none;
+	margin-top: 12px;
+	margin-bottom: 0;
+	padding: 0 4px;
+	font-size: 0.9rem;
+}
+.wip-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.wip-item + .wip-item {
+	margin-top: 8px;
+}
+.wip-item__jacket.jacket-placeholder {
+	flex: 0 0 52px;
+	width: 52px;
+	height: 52px;
+	border-radius: 9px;
+}
+.wip-item__jacket.jacket-placeholder span {
+	font-size: 0.5rem;
+	letter-spacing: 0.1em;
+}
+.wip-item__jacket.jacket-placeholder small {
+	font-size: 0.55rem;
+}
+.wip-item__body {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0 10px;
+}
+.wip-item__label {
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	color: var(--sage);
+}
+
+/* ── トップ：作品一覧への導線 ─────────────── */
+.more-link {
+	margin-top: 14px;
+	margin-bottom: 0;
+	text-align: right;
+	font-size: 0.9rem;
+	font-weight: 700;
+}
+.more-link a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	padding: 0 4px;
+	text-decoration: underline wavy var(--pink);
+	text-underline-offset: 6px;
+}
+.more-link--page {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 4px 18px;
+}
+
+/* ── 作品カード：制作中（押せるものがないので浮かせない） ── */
+.work-card--wip {
+	background: rgba(251, 248, 245, 0.6);
+	border-style: dashed;
+	box-shadow: none;
+}
+.work-card--wip:hover,
+.work-card--wip:active,
+.work-card--wip:focus-within {
+	transform: none !important;
+	box-shadow: none !important;
+}
+.work-card .target-badge--small {
+	margin-bottom: 8px;
+}
+
+/* ── 作品カード：Works 用（ジャケット大きめ・2列） ── */
+.work-grid--tiles {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+.work-card--tile {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 10px;
+	padding: 10px;
+	scroll-margin-top: 16px;
+}
+.work-card--tile .work-card__jacket {
+	flex: none;
+	width: 100%;
+}
+.work-card--tile .work-card__body {
+	padding: 0 2px 2px;
+}
+.work-card--tile .work-card__title {
+	font-size: 1.1rem;
+	margin-bottom: 6px;
+}
+.work-card--tile .work-card__links {
+	flex-direction: column;
+	align-items: stretch;
+}
+.work-card--tile .work-card__links .pill {
+	justify-content: center;
+	min-height: 40px;
+	padding-inline: 8px;
+}
+@media (min-width: 640px) {
+	.work-grid--tiles {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 20px;
+	}
+	.work-card--tile {
+		padding: 14px;
+	}
+	.work-card--tile .work-card__links {
+		flex-direction: row;
+		align-items: center;
+	}
+}
+
+/* ── 下層ページ共通 ───────────────────── */
+.page-main {
+	max-width: calc(var(--content) + 40px);
+	margin: 0 auto;
+	padding: 32px 20px 8px;
+}
+.page-title {
+	margin-bottom: 8px;
+}
+.page-section {
+	margin-top: 28px;
+}
+.sub-heading {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	margin: 0 0 12px;
+	font-size: 1rem;
+	font-weight: 800;
+}
+.sub-heading span {
+	font-size: 0.72rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--sage);
+}
+.panel {
+	padding: 18px 20px;
+	border: 1.5px solid var(--line);
+	border-radius: var(--radius);
+	background: var(--card);
+}
+
+/* About */
+.profile {
+	margin-top: 16px;
+}
+.draft-note {
+	display: inline-block;
+	margin: 0 0 12px;
+	padding: 2px 12px;
+	border: 1.5px dashed #cdbfb4;
+	border-radius: 999px;
+	color: var(--ink-muted);
+	font-size: 0.78rem;
+}
+.profile__name {
+	margin: 0;
+	font-size: 1.5rem;
+	font-weight: 800;
+	line-height: 1.4;
+}
+.profile__name span {
+	display: block;
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	color: var(--ink-soft);
+}
+.profile__lead {
+	margin: 12px 0 0;
+}
+.activity {
+	margin: 16px 0 0;
+}
+.activity__item {
+	padding: 12px 0;
+	border-top: 1.5px dashed var(--line);
+}
+.activity dt {
+	font-size: 0.8rem;
+	font-weight: 800;
+	letter-spacing: 0.16em;
+	color: var(--sage);
+}
+.activity dd {
+	margin: 2px 0 0;
+	font-size: 0.95rem;
+}
+
+/* Contact */
+.mail__lead {
+	margin: 0;
+	font-size: 0.92rem;
+}
+.mail__address {
+	margin: 6px 0 0;
+	font-size: 1.15rem;
+	font-weight: 800;
+	overflow-wrap: anywhere;
+}
+.mail__address a {
+	text-decoration: underline wavy var(--pink);
+	text-underline-offset: 6px;
+}
+
+/* ── リンク集：その他のリンク ─────────────── */
+.more-links {
+	margin-top: 14px;
+}
+.more-links summary {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 44px;
+	padding: 0 4px;
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+	list-style: none;
+}
+.more-links summary::-webkit-details-marker {
+	display: none;
+}
+.more-links summary::before {
+	content: '';
+	width: 0.5em;
+	height: 0.5em;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	transform: rotate(-45deg);
+	transition: transform 0.2s ease;
+}
+.more-links[open] summary::before {
+	transform: rotate(45deg);
+}
+.more-links__count {
+	font-weight: 500;
+	color: var(--ink-soft);
+}
+.site-links--full .more-links summary {
+	pointer-events: none;
+}
+.site-links--full .more-links summary::before {
+	display: none;
+}
+.link-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px;
+	margin: 4px 0 0;
+	padding: 0;
+	list-style: none;
+}
+@media (min-width: 640px) {
+	.link-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+.link-grid a,
+.link-grid__pending {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 48px;
+	padding: 4px 14px;
+	border: 1.5px solid var(--line);
+	border-radius: 12px;
+	background: rgba(255, 255, 255, 0.55);
+	font-size: 0.88rem;
+	font-weight: 700;
+	line-height: 1.3;
+	text-decoration: none;
+}
+.link-grid small {
+	font-size: 0.7rem;
+	font-weight: 500;
+	color: var(--ink-soft);
+}
+.link-grid__pending {
+	border-style: dashed;
+	color: var(--ink-muted);
+	font-weight: 500;
+}
+@media (hover: hover) {
+	.link-grid a:hover {
+		background: #fff;
+		border-color: var(--pink);
+	}
+}
+.link-grid a:focus-visible,
+.more-links summary:focus-visible,
+.more-link a:focus-visible,
+.mail__address a:focus-visible,
+.brand__link:focus-visible {
+	outline: 3px solid var(--pink-deep);
+	outline-offset: 2px;
+}
+
+/* Works：制作中はデスクトップでも横長（大きな空枠を並べない） */
+@media (min-width: 640px) {
+	.work-grid--wip .work-card {
+		flex-direction: row;
+		align-items: center;
+		padding: 12px;
+	}
+	.work-grid--wip .work-card__jacket {
+		flex: 0 0 84px;
+		width: 84px;
+	}
+	.work-grid--wip .work-card__body {
+		padding: 0;
 	}
 }

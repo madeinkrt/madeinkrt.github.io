@@ -1,24 +1,20 @@
 ---
-// トップページ（試作 WO-SITE-01）
+// トップページ（WO-SITE-01 試作 → WO-SITE-02 でデータ反映）
 // 作品・お知らせ・リンクはすべて src/content/ と src/data/ のデータから読む。
-import TopLayout from '../layouts/TopLayout.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
 import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
-import HeroHedgehog from '../components/top/HeroHedgehog.astro';
 import PeekHedgehog from '../components/top/PeekHedgehog.astro';
 import SleepyHedgehog from '../components/top/SleepyHedgehog.astro';
-import HiddenHedgehog from '../components/top/HiddenHedgehog.astro';
 import FloatingMotifs from '../components/top/FloatingMotifs.astro';
 import WorkCard from '../components/top/WorkCard.astro';
-import LinkPill from '../components/top/LinkPill.astro';
 import belly from '../assets/hedgehog/belly.png';
+import { getWorks } from '../lib/data';
 
-const byOrder = (a: { data: { order: number } }, b: { data: { order: number } }) => a.data.order - b.data.order;
-
-const works = await getCollection('works');
-const upcoming = works.filter((w) => w.data.status === 'upcoming').sort(byOrder);
-const released = works.filter((w) => w.data.status === 'released').sort(byOrder);
-const [next, ...later] = upcoming;
+const { released, targeted, untargeted } = await getWorks();
+// 目標表記のある制作中作品の先頭を NEXT RELEASE に、残りを「その先に」に出す。
+// 目標表記のない制作中作品（日程未定）は、日程を出さずに「ほかに制作中」に出す。
+const [next, ...later] = targeted;
 const NextContent = next ? (await render(next)).Content : null;
 
 const news = (await getCollection('news'))
@@ -26,58 +22,36 @@ const news = (await getCollection('news'))
 	.slice(0, 3);
 const newsRendered = await Promise.all(news.map(async (n) => ({ entry: n, Content: (await render(n)).Content })));
 
-const links = (await getCollection('links')).sort(byOrder);
-
 const fmtDate = (d: Date) => `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, '0')}.${String(d.getUTCDate()).padStart(2, '0')}`;
-const year = new Date().getFullYear();
 ---
 
-<TopLayout
+<SiteLayout
 	title="榑田いつき｜KURETA Itsuki 公式サイト"
 	description="榑田いつき（KURETA Itsuki）の公式サイト。音楽・イラスト・アニメーションの作品をまとめています。"
+	page="home"
 >
-	<p class="proto-note">試作版です（デザイン検討中）</p>
-
-	<header class="site-header">
-		<div class="site-header__inner">
-			<div class="brand">
-				<h1 class="brand__name">
-					<span class="brand__ja">榑田いつき</span><span class="brand__sep" aria-hidden="true">｜</span><span
-						class="brand__en"
-						lang="en">KURETA Itsuki</span
-					>
-				</h1>
-				<p class="brand__tagline" lang="en">Music · Illustration · Animation</p>
-			</div>
-			<HeroHedgehog />
-		</div>
-		<nav class="site-nav" aria-label="サイト内">
-			<a href="/about/"><span lang="en">About</span>プロフィール</a>
-			<a href="/works/"><span lang="en">Works</span>作品</a>
-			<a href="/contact/"><span lang="en">Contact</span>連絡先</a>
-		</nav>
-	</header>
-
 	<main class="top-main">
 		{
-			next && (
+			(next || untargeted.length > 0) && (
 				<section class="section next" aria-labelledby="next-heading" data-inview>
 					<h2 class="section__heading" id="next-heading">
 						<span class="section__en" lang="en">NEXT RELEASE</span>
 						<span class="section__ja">次の作品</span>
 					</h2>
-					<div class="next-card">
-						<div class="next-card__visual">
-							<FloatingMotifs />
-							<Image class="next-card__img" src={belly} alt="おなかを見せてくつろぐハリネズミの杉山" width={200} densities={[1, 2]} />
+					{next && (
+						<div class="next-card">
+							<div class="next-card__visual">
+								<FloatingMotifs />
+								<Image class="next-card__img" src={belly} alt="おなかを見せてくつろぐハリネズミの杉山" width={200} densities={[1, 2]} />
+							</div>
+							<div class="next-card__body">
+								{next.data.label && <p class="next-card__label" lang="en">{next.data.label}</p>}
+								<p class="next-card__title">『{next.data.title}』</p>
+								{next.data.target && <p class="target-badge">{next.data.target}</p>}
+								{NextContent && <div class="next-card__text"><NextContent /></div>}
+							</div>
 						</div>
-						<div class="next-card__body">
-							{next.data.label && <p class="next-card__label" lang="en">{next.data.label}</p>}
-							<p class="next-card__title">『{next.data.title}』</p>
-							{next.data.target && <p class="target-badge">{next.data.target}</p>}
-							{NextContent && <div class="next-card__text"><NextContent /></div>}
-						</div>
-					</div>
+					)}
 					{
 						later.length > 0 && (
 							<ul class="later-list">
@@ -87,6 +61,25 @@ const year = new Date().getFullYear();
 										{w.data.label && <span lang="en">{w.data.label}</span>}
 										<span class="later-list__title">『{w.data.title}』</span>
 										{w.data.target && <span class="target-badge target-badge--small">{w.data.target}</span>}
+									</li>
+								))}
+							</ul>
+						)
+					}
+					{
+						untargeted.length > 0 && (
+							<ul class="wip-list" aria-label="ほかに制作中の作品">
+								{untargeted.map((w) => (
+									<li class="wip-item">
+										<span class="wip-item__jacket jacket-placeholder" role="img" aria-label="ジャケット画像は準備中です">
+											<span>JACKET</span>
+											<small>準備中</small>
+										</span>
+										<span class="wip-item__body">
+											<span class="later-list__lead">ほかに制作中</span>
+											{w.data.label && <span class="wip-item__label" lang="en">{w.data.label}</span>}
+											<span class="later-list__title">『{w.data.title}』</span>
+										</span>
 									</li>
 								))}
 							</ul>
@@ -104,6 +97,7 @@ const year = new Date().getFullYear();
 			<div class="work-grid">
 				{released.map((w) => <WorkCard work={w} />)}
 			</div>
+			<p class="more-link"><a href="/works/">作品一覧へ<span aria-hidden="true"> →</span></a></p>
 			<PeekHedgehog />
 		</section>
 
@@ -130,28 +124,4 @@ const year = new Date().getFullYear();
 			</div>
 		</section>
 	</main>
-
-	<footer class="site-footer">
-		<h2 class="section__heading section__heading--footer">
-			<span class="section__en" lang="en">LINKS</span>
-			<span class="section__ja">リンク</span>
-		</h2>
-		<ul class="link-list">
-			{
-				links.map((l) => (
-					<li>
-						<LinkPill label={l.data.label} url={l.data.url} />
-					</li>
-				))
-			}
-		</ul>
-		<div class="site-footer__bottom">
-			<p class="copyright">&copy; {year} 榑田いつき / <span lang="en">KURETA Itsuki</span></p>
-			<HiddenHedgehog />
-		</div>
-	</footer>
-
-	<script>
-		import '../scripts/hedgehogs.ts';
-	</script>
-</TopLayout>
+</SiteLayout>

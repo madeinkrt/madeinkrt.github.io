@@ -18,13 +18,14 @@ const works = defineCollection({
 	schema: ({ image }) =>
 		z.object({
 			title: z.string(),
-			// released = 既発表（MUSIC 欄に出る） / upcoming = 次回作（NEXT RELEASE 欄に出る）
+			// released = 既発表（トップ MUSIC 欄・Works「既発表」） / upcoming = 制作中（トップ NEXT RELEASE 欄・Works「制作中」）
 			status: z.enum(['released', 'upcoming']),
 			// 例: "4th Single"（英語は飾りとして小さく表示）
 			label: z.preprocess(emptyToUndefined, z.string().optional()),
 			// 目標表記。例: "ボカコレ2027冬 参加目標"（確定・予定とは書かない）
+			// 制作中で target が空の作品は、日程を出さずに「ほかに制作中」として扱う
 			target: z.preprocess(emptyToUndefined, z.string().optional()),
-			// 並び順（小さいほど先）
+			// 並び順（発表順の通し番号。小さいほど先）
 			order: z.number().default(100),
 			// ジャケット画像（この .md からの相対パス）。未設定なら「準備中」の枠を表示
 			jacket: z.preprocess(emptyToUndefined, image().optional()),
@@ -54,6 +55,10 @@ const links = defineCollection({
 		label: z.string(),
 		// 空なら「準備中」として押せない表示になる
 		url: z.preprocess((v) => v ?? '', z.string()),
+		// main = 主要（大きなボタンで常に表示） / other = 「その他のリンク」にまとめる
+		group: z.enum(['main', 'other']).default('other'),
+		// 補足（例: "mstdn.jp"）。リンク名の横に小さく出る
+		note: z.preprocess(emptyToUndefined, z.string().optional()),
 		order: z.number().default(100),
 	}),
 });

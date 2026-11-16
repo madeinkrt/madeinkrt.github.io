@@ -1,0 +1,53 @@
+---
+// リンク集（src/data/links.json）の表示。
+//  - 主要（group: main）は大きなボタンで常に表示。
+//  - その他（group: other）は小さな文字リンクの2列グリッド。
+//    variant="footer" では「その他のリンク」として折りたたむ（スマホで長くならないように）。
+//    variant="full"（Contact ページ）では最初から開いた状態で並べる。
+import LinkPill from '../top/LinkPill.astro';
+import { getLinks } from '../../lib/data';
+
+interface Props {
+	variant?: 'footer' | 'full';
+}
+const { variant = 'footer' } = Astro.props;
+const { main, other } = await getLinks();
+---
+
+<div class:list={['site-links', `site-links--${variant}`]}>
+	<ul class="link-list">
+		{
+			main.map((l) => (
+				<li>
+					<LinkPill label={l.data.label} url={l.data.url} />
+				</li>
+			))
+		}
+	</ul>
+	{
+		other.length > 0 && (
+			<details class="more-links" open={variant === 'full'}>
+				<summary>
+					その他のリンク<span class="more-links__count">（{other.length}）</span>
+				</summary>
+				<ul class="link-grid">
+					{other.map((l) => (
+						<li>
+							{l.data.url ? (
+								<a href={l.data.url} target="_blank" rel="noopener">
+									{l.data.label}
+									{l.data.note && <small>{l.data.note}</small>}
+								</a>
+							) : (
+								<span class="link-grid__pending">
+									{l.data.label}
+									<small>準備中</small>
+								</span>
+							)}
+						</li>
+					))}
+				</ul>
+			</details>
+		)
+	}
+</div>

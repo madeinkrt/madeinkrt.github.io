@@ -1,10 +1,35 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-const pageTitle = "連絡先・居場所など";
+// Contact（連絡先）：メールとリンク集。問い合わせフォームは置かない。
+// 有償依頼の受付文言は入れない（Service 廃止の決定どおり）。
+import SiteLayout from '../layouts/SiteLayout.astro';
+import SiteLinks from '../components/site/SiteLinks.astro';
+
+const mail = 'madeinkrt@gmail.com';
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-    <p>Mail: madeinkrt@gmail.com</p>
-    <p>Twitter: <a href="https://x.com/made_by_KRT">@made_by_KRT</a></p>
-    <p>Pixiv: <a href="https://www.pixiv.net/users/45369565">45369565</a></p>
-</BaseLayout>
+<SiteLayout
+	title="Contact 連絡先｜榑田いつき KURETA Itsuki"
+	description="榑田いつき（KURETA Itsuki）の連絡先とリンク集。"
+	page="contact"
+	footerLinks={false}
+>
+	<main class="page-main">
+		<h1 class="section__heading page-title">
+			<span class="section__en" lang="en">CONTACT</span>
+			<span class="section__ja">連絡先</span>
+		</h1>
+
+		<section class="page-section" aria-labelledby="mail-heading">
+			<h2 class="sub-heading" id="mail-heading"><span lang="en">Mail</span>メール</h2>
+			<div class="panel mail">
+				<p class="mail__lead">ご連絡はメールでお願いします。</p>
+				<p class="mail__address"><a href={`mailto:${mail}`}>{mail}</a></p>
+			</div>
+		</section>
+
+		<section class="page-section" aria-labelledby="links-heading">
+			<h2 class="sub-heading" id="links-heading"><span lang="en">Links</span>リンク集</h2>
+			<SiteLinks variant="full" />
+		</section>
+	</main>
+</SiteLayout>
