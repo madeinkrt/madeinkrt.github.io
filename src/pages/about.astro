@@ -1,12 +1,23 @@
 ---
 // About（プロフィール）
-// ※ 紹介文は暫定（制作者の確認待ち）。経歴・受賞歴などは書かない。
-//   確定したら下の「暫定」表示（.draft-note）を外して文面を差し替える。
+// 紹介文は確定文（C-SITE-05 案3「杉山を看板にする」、2026-11-17 採用／WO-SITE-04）。
+// 文面は改変しないこと（改行・段落分けの調整のみ可）。経歴・受賞歴などは書かない。
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getWorks } from '../lib/data';
 
-const { released } = await getWorks();
-const releasedText = released.map((w) => `${w.data.label ? `${w.data.label}` : ''}『${w.data.title}』`).join('、');
+// Music の項目文は確定文をそのまま表示する（作品データからの自動生成より確定文を優先）。
+// 作品データとの食い違いに気づけるよう、作品名が確定文に含まれているかだけビルド時に確認する。
+// 表示は変えない。作品が増えたり名前が変わったら、確定文の更新を制作者に確認すること。
+const musicText =
+	'1st Single『ランタナ』、2nd Single『JAIL』を発表済み。制作中は3rd『兎葵燕麥』、4th『はりねずみの杉山』、5th『昴』で、4thは杉山がモチーフですが、本ハリの許可は取っていません。';
+
+const { released, upcoming } = await getWorks();
+const missing = [...released, ...upcoming].filter((w) => !musicText.includes(`『${w.data.title}』`));
+if (missing.length > 0) {
+	console.warn(
+		`[about] Music の確定文に載っていない作品があります: ${missing.map((w) => w.data.title).join('、')}（確定文の更新を制作者に確認してください）`,
+	);
+}
 ---
 
 <SiteLayout
@@ -21,24 +32,27 @@ const releasedText = released.map((w) => `${w.data.label ? `${w.data.label}` : '
 		</h1>
 
 		<div class="panel profile">
-			<p class="draft-note">暫定の紹介文です（内容を確認中）</p>
 			<p class="profile__name">榑田いつき<span lang="en">KURETA Itsuki</span></p>
-			<p class="profile__lead">音楽・イラスト・アニメーションをつくっています。</p>
+			<p class="profile__tagline">杉山には針がある。飼い主には曲がある。</p>
+
+			<div class="profile__lead">
+				<p>ハリネズミの杉山の飼い主です。名前は榑田いつき（KURETA Itsuki）といいますが、覚えるのは杉山のほうだけで構いません。</p>
+				<p>ハリネズミは、近づきすぎると刺さる生き物として知られています。飼い主のほうも馴れ合いが本当に無理で、普段は社不ムーヴしかしていません。針があるぶん、杉山のほうが誠実です。こちらには針が生えていないので、ここに書いて警告しておきます。</p>
+				<p>やっているのは、音楽と、漫画・絵と、MVなどのアニメーション。作詞作曲からMVまで基本ひとりで作り、ニコニコ動画とYouTubeで発表しています。感想への返信が義務になるのは苦手です。返事がないときは、丸まっていると思ってください。</p>
+			</div>
 
 			<dl class="activity">
 				<div class="activity__item">
 					<dt lang="en">Music</dt>
-					<dd>
-						オリジナル曲を、ニコニコ動画と YouTube で発表しています。{releasedText && <Fragment>これまでに{releasedText}を発表しました。</Fragment>}
-					</dd>
+					<dd>{musicText}</dd>
 				</div>
 				<div class="activity__item">
 					<dt lang="en">Illustration</dt>
-					<dd>漫画や絵を描いています。</dd>
+					<dd>漫画と絵を描きます。モチーフは杉山に限りません。</dd>
 				</div>
 				<div class="activity__item">
 					<dt lang="en">Animation</dt>
-					<dd>MV などのアニメーションをつくっています。</dd>
+					<dd>MVなどのアニメーションを自分で作っています。曲も絵も動きも、出どころは同じひとりです。</dd>
 				</div>
 			</dl>
 		</div>
