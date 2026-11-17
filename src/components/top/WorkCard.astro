@@ -3,16 +3,17 @@
 //  - variant="row"  : トップ用。スマホではジャケット左・文字右の横長。
 //  - variant="tile" : Works 用。ジャケットを大きく上に出す。id（作品 ID）付きで /works/#lantana のように飛べる。
 // 曲名は画像任せにせず、必ず文字（見出し）で出す。
+// ジャケットと曲名は作品ページ（/works/<ID>/）へのリンク。鑑賞ボタンは各サービスへの直接リンクのまま（WO-SITE-08）。
 // 仕掛け⑦（モチーフ）：ホバー／タップで軽く浮き上がる（CSS のみ）。
 import { Image } from 'astro:assets';
 import { render } from 'astro:content';
 import LinkPill from './LinkPill.astro';
-import type { Work } from '../../lib/data';
+import { workPath, type Work } from '../../lib/data';
 
 interface Props {
 	work: Work;
 	variant?: 'row' | 'tile';
-	/** 付けると article に id を振る（ページ内リンク・将来の個別ページ用） */
+	/** 付けると article に id を振る（/works/#lantana のようなページ内リンク用） */
 	anchor?: boolean;
 }
 const { work, variant = 'row', anchor = false } = Astro.props;
@@ -20,6 +21,7 @@ const { title, label, jacket, links, target, status } = work.data;
 const { Content } = await render(work);
 const hasBody = !!work.body?.trim();
 const released = status === 'released';
+const href = workPath(work);
 // 表示幅：スマホは row = 96px／tile = 画面の約半分、640px 以上はどちらもカード幅（約 300px）
 const imgSizes = variant === 'tile' ? '(min-width: 640px) 300px, 46vw' : '(min-width: 640px) 300px, 96px';
 const imgWidths = [96, 192, 300, 400, 600];
@@ -27,20 +29,25 @@ const imgWidths = [96, 192, 300, 400, 600];
 
 <article class:list={['work-card', `work-card--${variant}`, { 'work-card--wip': !released }]} id={anchor ? work.id : undefined}>
 	<div class="work-card__jacket">
-		{
-			jacket ? (
-				<Image src={jacket} alt={`『${title}』ジャケット`} widths={imgWidths} sizes={imgSizes} />
-			) : (
-				<div class="jacket-placeholder" role="img" aria-label="ジャケット画像は準備中です">
-					<span>JACKET</span>
-					<small>準備中</small>
-				</div>
-			)
-		}
+		{/* 行き先は曲名のリンクと同じなので、Tab 移動と読み上げは曲名側だけにする */}
+		<a class="work-card__jacket-link" href={href} tabindex="-1" aria-hidden="true">
+			{
+				jacket ? (
+					<Image src={jacket} alt={`『${title}』ジャケット`} widths={imgWidths} sizes={imgSizes} />
+				) : (
+					<div class="jacket-placeholder">
+						<span>JACKET</span>
+						<small>準備中</small>
+					</div>
+				)
+			}
+		</a>
 	</div>
 	<div class="work-card__body">
 		{label && <p class="work-card__label" lang="en">{label}</p>}
-		<h3 class="work-card__title">{title}</h3>
+		<h3 class="work-card__title">
+			<a class="work-card__title-link" href={href}>{title}</a>
+		</h3>
 		{target && <p class="target-badge target-badge--small">{target}</p>}
 		{
 			hasBody && (

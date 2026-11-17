@@ -1248,3 +1248,201 @@ a.pill:focus-visible,
 	bottom: calc(100% + 4px);
 	translate: -50% 0;
 }
+
+/* ════════════════════════════════════════════
+   WO-SITE-08：作品ページ（/works/<ID>/）と、カードからの導線
+   ════════════════════════════════════════════ */
+
+/* ── 作品カード：ジャケットと曲名を作品ページへのリンクに ── */
+.work-card__jacket-link {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.work-card__title-link {
+	text-decoration: none;
+}
+@media (hover: hover) {
+	.work-card__title-link:hover {
+		text-decoration: underline wavy var(--pink);
+		text-underline-offset: 6px;
+	}
+}
+.work-card__title-link:focus-visible,
+.work-page__crumb:focus-visible,
+.work-nav__item:focus-visible {
+	outline: 3px solid var(--pink-deep);
+	outline-offset: 2px;
+	border-radius: 6px;
+}
+
+/* ── 作品ページ ──────────────────────── */
+.work-page__crumb {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 4px 12px;
+	text-decoration: none;
+}
+.work-detail {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas:
+		'head'
+		'jacket'
+		'body'
+		'ai';
+	gap: 16px;
+	margin-top: 16px;
+}
+.work-detail__head {
+	grid-area: head;
+}
+.work-detail__jacket {
+	grid-area: jacket;
+	width: 100%;
+	max-width: 420px;
+	aspect-ratio: 1;
+	border-radius: 14px;
+	overflow: hidden;
+}
+.work-detail__jacket img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.work-detail__jacket .jacket-placeholder span {
+	font-size: 0.95rem;
+}
+.work-detail__jacket .jacket-placeholder small {
+	font-size: 0.85rem;
+}
+.work-detail__body {
+	grid-area: body;
+	min-width: 0;
+}
+.work-detail__title {
+	margin: 0 0 8px;
+	font-size: clamp(1.5rem, 6.4vw, 2.1rem);
+	font-weight: 800;
+	line-height: 1.4;
+}
+.work-detail__feat {
+	display: block;
+	font-size: 0.5em;
+	font-weight: 700;
+	color: var(--ink-soft);
+}
+.work-detail__badges {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 8px;
+	margin: 0;
+}
+.status-badge {
+	display: inline-block;
+	padding: 1px 10px;
+	border: 1.5px solid var(--sage);
+	border-radius: 999px;
+	color: var(--sage);
+	font-size: 0.78rem;
+	font-weight: 700;
+}
+.status-badge--wip {
+	border-style: dashed;
+	border-color: var(--ink-muted);
+	color: var(--ink-soft);
+}
+.work-detail__date {
+	margin: 8px 0 0;
+	font-size: 0.88rem;
+	color: var(--ink-soft);
+}
+.work-detail__section + .work-detail__section {
+	margin-top: 18px;
+	padding-top: 16px;
+	border-top: 1.5px dashed var(--line);
+}
+.work-detail__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+.work-detail__intro p,
+.work-detail__note {
+	margin: 0 0 10px;
+	font-size: 0.95rem;
+}
+.work-detail__intro p:last-child {
+	margin-bottom: 0;
+}
+.work-detail__credits {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 0.95rem;
+}
+.work-detail__ai {
+	grid-area: ai;
+	margin: 4px 0 0;
+	font-size: 0.75rem;
+	line-height: 1.7;
+	color: var(--ink-muted);
+}
+@media (min-width: 640px) {
+	.work-detail {
+		grid-template-columns: 320px minmax(0, 1fr);
+		grid-template-areas:
+			'jacket head'
+			'jacket body'
+			'ai ai';
+		grid-template-rows: auto 1fr auto;
+		column-gap: 28px;
+		padding: 24px 28px;
+	}
+}
+
+/* 前後の作品 */
+.work-nav {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px;
+	margin-top: 20px;
+}
+.work-nav__item {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 56px;
+	padding: 6px 14px;
+	border: 1.5px solid var(--line);
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.55);
+	line-height: 1.4;
+	text-decoration: none;
+}
+.work-nav__item--next {
+	grid-column: 2;
+	text-align: right;
+}
+.work-nav__item--empty {
+	visibility: hidden;
+}
+.work-nav__dir {
+	font-size: 0.78rem;
+	font-weight: 700;
+	color: var(--sage);
+}
+.work-nav__title {
+	font-size: 0.92rem;
+	font-weight: 700;
+	overflow-wrap: anywhere;
+}
+@media (hover: hover) {
+	.work-nav__item:hover {
+		background: #fff;
+		border-color: var(--pink);
+	}
+}

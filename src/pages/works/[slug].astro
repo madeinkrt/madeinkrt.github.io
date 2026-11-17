@@ -1,0 +1,215 @@
+---
+// 作品ページ（/works/<作品 ID>/）。作品 ID は src/content/works のファイル名（WO-SITE-08）。
+// データは Works・トップと同じ src/content/works。データが空の節は出さない。
+import { Image, getImage } from 'astro:assets';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import LinkPill from '../../components/top/LinkPill.astro';
+import { getWorks, workPath, type Work } from '../../lib/data';
+
+export async function getStaticPaths() {
+	const { all } = await getWorks();
+	return all.map((work, i) => ({
+		params: { slug: work.id },
+		props: { work, prev: all[i - 1], next: all[i + 1] },
+	}));
+}
+
+interface Props {
+	work: Work;
+	prev?: Work;
+	next?: Work;
+}
+const { work, prev, next } = Astro.props;
+const { title, label, status, target, jacket, links, releaseDate, credits, intro, piaproUrl, streamingUrl, fanboxUrl } =
+	work.data;
+const released = status === 'released';
+
+// feat. 表記：クレジットの「唄：」の行から作る（専用の項目は持たない）
+const vocal = credits?.find((c) => /^唄[：:]/.test(c))?.replace(/^唄[：:]\s*/, '');
+
+// 公開日：YYYY-MM-DD → YYYY年M月D日
+const releaseDateText = releaseDate
+	? (([y, m, d]) => `${y}年${m}月${d}日`)(releaseDate.split('-').map(Number))
+	: undefined;
+
+// 鑑賞リンク：カードと同じく既発表の作品だけ出す。配信 URL があれば「配信で聴く」を足す
+const watchLinks = [
+	...(released ? links.map((l) => ({ ...l, aria: l.url ? `『${title}』を${l.label}で見る` : undefined })) : []),
+	...(streamingUrl ? [{ label: '配信で聴く', url: streamingUrl, aria: `『${title}』を配信で聴く` }] : []),
+];
+
+// FANBOX：既発表は常に出す（URL 未設定なら FANBOX トップ）。制作中は URL を設定したときだけ
+const fanboxHref = fanboxUrl ?? (released ? 'https://madeinkrt.fanbox.cc/' : undefined);
+
+const introParagraphs = intro?.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean) ?? [];
+
+// OGP
+const pageTitle = `『${title}』${label ? ` ${label}` : ''}｜榑田いつき KURETA Itsuki`;
+const description = intro ? intro.replace(/\s+/g, ' ').trim() : `榑田いつき - ${label ?? ''}『${title}』`;
+const ogImage = jacket
+	? await getImage({ src: jacket, format: 'jpg', width: Math.min(jacket.width, 1200) }).then((img) => ({
+			src: img.src,
+			width: Number(img.attributes.width),
+			height: Number(img.attributes.height),
+			alt: `『${title}』ジャケット`,
+		}))
+	: undefined;
+---
+
+<SiteLayout title={pageTitle} description={description} page="works" ogImage={ogImage}>
+	<main class="page-main work-page">
+		<p class="section__heading page-title">
+			<a class="work-page__crumb" href="/works/">
+				<span class="section__en" lang="en">WORKS</span>
+				<span class="section__ja">作品</span>
+			</a>
+		</p>
+
+		<article class="panel work-detail">
+			<header class="work-detail__head">
+				{label && <p class="work-card__label" lang="en">{label}</p>}
+				<h1 class="work-detail__title">
+					{title}
+					{vocal && <span class="work-detail__feat"><span lang="en">feat.</span> {vocal}</span>}
+				</h1>
+				<p class="work-detail__badges">
+					{released ? (
+						<span class="status-badge">既発表</span>
+					) : (
+						<span class="status-badge status-badge--wip">制作中</span>
+					)}
+					{target && <span class="target-badge target-badge--small">{target}</span>}
+				</p>
+				{releaseDateText && (
+					<p class="work-detail__date">
+						公開日：<time datetime={releaseDate}>{releaseDateText}</time>
+					</p>
+				)}
+			</header>
+
+			<div class="work-detail__jacket">
+				{
+					jacket ? (
+						<Image
+							src={jacket}
+							alt={`『${title}』ジャケット`}
+							widths={[300, 400, 600, 800].filter((w) => w <= jacket.width)}
+							sizes="(min-width: 640px) 320px, calc(100vw - 82px)"
+							loading="eager"
+						/>
+					) : (
+						<div class="jacket-placeholder" role="img" aria-label="ジャケット画像は準備中です">
+							<span>JACKET</span>
+							<small>準備中</small>
+						</div>
+					)
+				}
+			</div>
+
+			<div class="work-detail__body">
+				{
+					watchLinks.length > 0 && (
+						<section class="work-detail__section" aria-labelledby="watch-heading">
+							<h2 class="sub-heading" id="watch-heading">
+								<span lang="en">Listen / Watch</span>聴く・観る
+							</h2>
+							<div class="work-detail__links">
+								{watchLinks.map((l) => (
+									<LinkPill label={l.label} url={l.url} ariaLabel={l.aria} />
+								))}
+							</div>
+						</section>
+					)
+				}
+
+				{
+					introParagraphs.length > 0 && (
+						<section class="work-detail__section" aria-labelledby="intro-heading">
+							<h2 class="sub-heading" id="intro-heading">
+								<span lang="en">About</span>紹介
+							</h2>
+							<div class="work-detail__intro">
+								{introParagraphs.map((p) => (
+									<p>{p}</p>
+								))}
+							</div>
+						</section>
+					)
+				}
+
+				{
+					credits && credits.length > 0 && (
+						<section class="work-detail__section" aria-labelledby="credits-heading">
+							<h2 class="sub-heading" id="credits-heading">
+								<span lang="en">Credits</span>クレジット
+							</h2>
+							<ul class="work-detail__credits">
+								{credits.map((c) => (
+									<li>{c}</li>
+								))}
+							</ul>
+						</section>
+					)
+				}
+
+				{
+					piaproUrl && (
+						<section class="work-detail__section" aria-labelledby="piapro-heading">
+							<h2 class="sub-heading" id="piapro-heading">
+								<span lang="en">piapro</span>歌詞・インスト
+							</h2>
+							<p class="work-detail__note">歌詞とインストは piapro に置いています。</p>
+							<div class="work-detail__links">
+								<LinkPill label="piapro で見る" url={piaproUrl} ariaLabel={`『${title}』の歌詞とインストを piapro で見る`} />
+							</div>
+						</section>
+					)
+				}
+
+				{
+					fanboxHref && (
+						<section class="work-detail__section" aria-labelledby="fanbox-heading">
+							<h2 class="sub-heading" id="fanbox-heading">
+								<span lang="en">FANBOX</span>制作記録
+							</h2>
+							<p class="work-detail__note">制作の裏側や進捗は FANBOX に記録しています。</p>
+							<div class="work-detail__links">
+								<LinkPill label="FANBOX を見る" url={fanboxHref} />
+							</div>
+						</section>
+					)
+				}
+			</div>
+
+			<p class="work-detail__ai">
+				※本作品の制作には AI ツールを活用しています。生成された素材はすべて榑田いつき本人が確認し、採否と最終判断を行っています。
+			</p>
+		</article>
+
+		<nav class="work-nav" aria-label="作品の移動">
+			{
+				prev ? (
+					<a class="work-nav__item work-nav__item--prev" href={workPath(prev)} rel="prev">
+						<span class="work-nav__dir">← 前の作品</span>
+						<span class="work-nav__title">『{prev.data.title}』</span>
+					</a>
+				) : (
+					<span class="work-nav__item work-nav__item--empty" aria-hidden="true" />
+				)
+			}
+			{
+				next ? (
+					<a class="work-nav__item work-nav__item--next" href={workPath(next)} rel="next">
+						<span class="work-nav__dir">次の作品 →</span>
+						<span class="work-nav__title">『{next.data.title}』</span>
+					</a>
+				) : (
+					<span class="work-nav__item work-nav__item--empty" aria-hidden="true" />
+				)
+			}
+		</nav>
+		<p class="more-link more-link--page">
+			<a href="/works/">作品一覧へ<span aria-hidden="true"> →</span></a>
+		</p>
+	</main>
+</SiteLayout>

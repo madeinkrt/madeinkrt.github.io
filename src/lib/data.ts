@@ -12,6 +12,8 @@ export async function getWorks() {
 	const released = all.filter((w) => w.data.status === 'released');
 	const upcoming = all.filter((w) => w.data.status === 'upcoming');
 	return {
+		/** 全作品（発表順）。作品ページの前後ナビに使う */
+		all,
 		/** 既発表（発表順） */
 		released,
 		/** 制作中すべて（発表順） */
@@ -22,6 +24,9 @@ export async function getWorks() {
 		untargeted: upcoming.filter((w) => !w.data.target),
 	};
 }
+
+/** 作品ページの URL（/works/<作品 ID>/）。作品 ID は src/content/works のファイル名 */
+export const workPath = (work: Work) => `/works/${work.id}/`;
 
 export async function getLinks() {
 	const all = (await getCollection('links')).sort(byOrder);

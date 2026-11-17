@@ -13,6 +13,23 @@ import { glob, file } from 'astro/loaders';
 // CMS やスマホ編集で値を消したときにビルドが落ちないようにする。
 const emptyToUndefined = (v: unknown) => (v === '' || v === null ? undefined : v);
 
+// 日付（YYYY-MM-DD）。YAML では引用符なしの 2025-12-19 が日付型として読まれるので、文字列に戻してから確かめる。
+const ymd = (v: unknown) => {
+	const u = emptyToUndefined(v);
+	return u instanceof Date ? u.toISOString().slice(0, 10) : u;
+};
+
+// 文字列の配列。空欄の行は捨て、1件も残らなければ「未設定」とする。
+const stringList = (v: unknown) => {
+	const u = emptyToUndefined(v);
+	if (!Array.isArray(u)) return u;
+	const rest = u.filter((s) => s !== '' && s !== null && s !== undefined);
+	return rest.length > 0 ? rest : undefined;
+};
+
+// 任意の URL（空欄なら未設定）
+const optionalUrl = z.preprocess(emptyToUndefined, z.string().url().optional());
+
 const works = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/works' }),
 	schema: ({ image }) =>
@@ -38,6 +55,19 @@ const works = defineCollection({
 					}),
 				)
 				.default([]),
+			// ── 以下は作品ページ（/works/<ID>/）用。すべて任意で、未設定なら作品ページでその節ごと出さない ──
+			// 公開日（YYYY-MM-DD）。作品ページに「公開日：2025年12月19日」の形で出る
+			releaseDate: z.preprocess(ymd, z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'YYYY-MM-DD で書いてください').optional()),
+			// クレジット（1行 = 1項目）。例: "唄：宮舞モカ"。「唄：」の行は曲名の feat. 表記にも使う
+			credits: z.preprocess(stringList, z.array(z.string()).optional()),
+			// 作品ページの紹介文（OGP の説明文にも使う）
+			intro: z.preprocess(emptyToUndefined, z.string().optional()),
+			// piapro（歌詞・インスト）の URL
+			piaproUrl: optionalUrl,
+			// 配信（サブスク等）の URL。「配信で聴く」ボタンになる
+			streamingUrl: optionalUrl,
+			// FANBOX の URL。既発表の作品は未設定でも FANBOX トップへの案内を出す。制作中の作品は設定したときだけ出す
+			fanboxUrl: optionalUrl,
 		}),
 });
 

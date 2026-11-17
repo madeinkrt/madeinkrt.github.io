@@ -16,10 +16,16 @@ interface Props {
 	footerLinks?: boolean;
 	/** 検索結果に出さないページ（404 など）。canonical / og:url も出さない */
 	noindex?: boolean;
+	/** ページ固有の OGP 画像（作品ページのジャケットなど）。未指定なら共通の ogp.jpg */
+	ogImage?: { src: string; width: number; height: number; alt: string };
 }
-const { title, description, page, footerLinks = true, noindex = false } = Astro.props;
+const { title, description, page, footerLinks = true, noindex = false, ogImage: pageOgImage } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL('/ogp.jpg', Astro.site);
+const og = pageOgImage
+	? { ...pageOgImage, src: new URL(pageOgImage.src, Astro.site) }
+	: { src: new URL('/ogp.jpg', Astro.site), width: 1200, height: 630, alt: 'おなかを見せて笑うハリネズミの杉山' };
+// 正方形に近い画像（ジャケット）は横長カードだと上下が切れるので、小さいカード表示にする
+const twitterCard = og.width / og.height >= 1.5 ? 'summary_large_image' : 'summary';
 ---
 
 <!doctype html>
@@ -36,14 +42,14 @@ const ogImage = new URL('/ogp.jpg', Astro.site);
 		{!noindex && <meta property="og:url" content={canonical} />}
 		<meta property="og:site_name" content="榑田いつき｜KURETA Itsuki" />
 		<meta property="og:locale" content="ja_JP" />
-		<meta property="og:image" content={ogImage} />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
-		<meta property="og:image:alt" content="おなかを見せて笑うハリネズミの杉山" />
-		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:image" content={og.src} />
+		<meta property="og:image:width" content={String(og.width)} />
+		<meta property="og:image:height" content={String(og.height)} />
+		<meta property="og:image:alt" content={og.alt} />
+		<meta name="twitter:card" content={twitterCard} />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image" content={og.src} />
 		<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 		<meta name="generator" content={Astro.generator} />
