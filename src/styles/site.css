@@ -40,15 +40,6 @@ body.site a {
 	color: inherit;
 }
 
-.proto-note {
-	margin: 0;
-	padding: 4px 12px;
-	background: var(--paper-deep);
-	color: var(--ink-soft);
-	font-size: 0.75rem;
-	text-align: center;
-}
-
 /* ── ヘッダー ───────────────────────── */
 .site-header__inner {
 	display: flex;
