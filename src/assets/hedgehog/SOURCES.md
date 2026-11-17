@@ -33,3 +33,17 @@
 | ogp.jpg（1200×630） | `sources/diecut_sugiyama.psd`（杉山の原画、単一レイヤー） | レイヤーの透過をそのまま読み出し、高さ 540px に縮小して紙色 #F2EBE6 の中央に配置。絵の改変なし |
 | favicon.ico（16/32/48）・favicon-32x32.png | `assets/sprites/front/front-0.png`（hero.png と同じ） | 縮小のみ（透過） |
 | apple-touch-icon.png（180×180） | 同上 | 縮小して紙色背景に配置（iOS は透過を黒にするため） |
+
+## WO-SITE-06 で差し替え（2026-11-17 コピー、元ファイルは無変更）
+
+MV 側 M2r11 で修正済みの素材に差し替え。ファイル名・寸法は変更なし。
+元フォルダ：`榑田いつき - 4th Single『はりねずみの杉山』/assets/site-fixed/`
+
+| サイト内のファイル | 元ファイル | sha256 |
+| --- | --- | --- |
+| hero.png（404×364） | hero-fixed.png（MV の r11 front-0 と同一） | 28af01d0…0b08 |
+| wave.png（368×348） | wave-fixed.png（後脚の輪郭を修正した最終版） | 4f4263b5…6b0a |
+
+favicon.ico・favicon-32x32.png・apple-touch-icon.png は差し替え後の hero.png から WO-SITE-03 と同じ手順で再生成
+（透明余白を切り詰め → lanczos3 で縮小。ico は 16/32 が全面、48 は 46px の絵に 1px の透明余白、PNG 埋め込み。apple-touch-icon は 148px 枠に収めて 180×180 の紙色 #F2EBE6 中央に配置）。
+ogp.jpg は原画（diecut_sugiyama.psd）由来で front-0 とは別構図のため変更なし。
