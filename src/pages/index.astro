@@ -3,13 +3,14 @@
 // 作品・お知らせ・リンクはすべて src/content/ と src/data/ のデータから読む。
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { Image } from 'astro:assets';
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import PeekHedgehog from '../components/top/PeekHedgehog.astro';
+import NewsItem from '../components/site/NewsItem.astro';
 import SleepyHedgehog from '../components/top/SleepyHedgehog.astro';
 import FloatingMotifs from '../components/top/FloatingMotifs.astro';
 import WorkCard from '../components/top/WorkCard.astro';
 import belly from '../assets/hedgehog/belly.png';
-import { getWorks, workPath } from '../lib/data';
+import { getNews, getWorks, workPath } from '../lib/data';
 
 const { released, targeted, untargeted } = await getWorks();
 // NEXT RELEASE の各作品は、曲名から作品ページへ（stretched-link で next-card・各行の全体をタップ領域にする。WO-SITE-10）
@@ -18,12 +19,8 @@ const { released, targeted, untargeted } = await getWorks();
 const [next, ...later] = targeted;
 const NextContent = next ? (await render(next)).Content : null;
 
-const news = (await getCollection('news'))
-	.sort((a, b) => b.data.date.getTime() - a.data.date.getTime() || b.id.localeCompare(a.id))
-	.slice(0, 3);
-const newsRendered = await Promise.all(news.map(async (n) => ({ entry: n, Content: (await render(n)).Content })));
-
-const fmtDate = (d: Date) => `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, '0')}.${String(d.getUTCDate()).padStart(2, '0')}`;
+// NEWS 欄は最新3件だけ。全件はカテゴリ付きで /news/ に（WO-SITE-12）
+const news = (await getNews()).slice(0, 3);
 ---
 
 <SiteLayout
@@ -115,20 +112,11 @@ const fmtDate = (d: Date) => `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1
 			</h2>
 			<div class="news-box">
 				<ul class="news-list">
-					{
-						newsRendered.map(({ entry, Content }) => (
-							<li class="news-item">
-								<time datetime={entry.data.date.toISOString().slice(0, 10)}>{fmtDate(entry.data.date)}</time>
-								<p class="news-item__title">{entry.data.title}</p>
-								<div class="news-item__text">
-									<Content />
-								</div>
-							</li>
-						))
-					}
+					{news.map((n) => <NewsItem entry={n} />)}
 				</ul>
 				<SleepyHedgehog />
 			</div>
+			<p class="more-link"><a href="/news/">NEWS 一覧を見る<span aria-hidden="true"> →</span></a></p>
 		</section>
 	</main>
 </SiteLayout>

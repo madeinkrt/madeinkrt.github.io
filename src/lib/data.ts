@@ -64,6 +64,28 @@ export function allStreamingLinks(work: Work) {
 	];
 }
 
+export type News = CollectionEntry<'news'>;
+export type NewsCategory = News['data']['category'];
+
+/** NEWS のカテゴリ（WO-SITE-12）。並び順は /news/ の絞り込みボタンの順 */
+export const newsCategories: { key: NewsCategory; label: string }[] = [
+	{ key: 'news', label: 'お知らせ' },
+	{ key: 'activity', label: '活動' },
+	{ key: 'site', label: 'サイト更新' },
+];
+export const newsCategoryLabel = (key: NewsCategory) => newsCategories.find((c) => c.key === key)?.label ?? key;
+
+/** お知らせ全件（日付の新しい順。同じ日付はファイル名の逆順）。トップ（先頭3件）と /news/（全件）で共通 */
+export async function getNews() {
+	return (await getCollection('news')).sort(
+		(a, b) => b.data.date.getTime() - a.data.date.getTime() || b.id.localeCompare(a.id),
+	);
+}
+
+/** お知らせの日付表示（2026.11.18）。日付は UTC の 0 時として読まれるので UTC で取り出す */
+export const fmtNewsDate = (d: Date) =>
+	`${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, '0')}.${String(d.getUTCDate()).padStart(2, '0')}`;
+
 export async function getLinks() {
 	const all = (await getCollection('links')).sort(byOrder);
 	return {

@@ -1,0 +1,24 @@
+---
+// お知らせ 1 件（日付・カテゴリバッジ・タイトル・本文）。トップの NEWS 欄と /news/ で共通（WO-SITE-12）。
+// data-category は /news/ の絞り込みが使う。
+import { render } from 'astro:content';
+import { fmtNewsDate, newsCategoryLabel, type News } from '../../lib/data';
+
+interface Props {
+	entry: News;
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { date, category, title } = entry.data;
+---
+
+<li class="news-item" data-category={category}>
+	<p class="news-item__meta">
+		<time datetime={date.toISOString().slice(0, 10)}>{fmtNewsDate(date)}</time>
+		<span class:list={['news-badge', `news-badge--${category}`]}>{newsCategoryLabel(category)}</span>
+	</p>
+	<p class="news-item__title">{title}</p>
+	<div class="news-item__text">
+		<Content />
+	</div>
+</li>

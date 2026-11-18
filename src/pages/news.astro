@@ -1,0 +1,85 @@
+---
+// NEWS（お知らせ一覧）：全件を日付の新しい順に並べる（WO-SITE-12）。データは src/content/news（トップと共通）。
+// カテゴリの絞り込みは下の小さなスクリプトで行う。
+//  - HTML には全件をそのまま書き出す。JavaScript が無効でも全件が見える
+//  - 絞り込みボタンは hidden で書き出し、スクリプトが動いたときだけ表示する（押しても何も起きないボタンを見せない）
+//  - 選んだカテゴリは ?category=activity の形で URL に残す（そのまま共有・再読み込みできる）
+import SiteLayout from '../layouts/SiteLayout.astro';
+import NewsItem from '../components/site/NewsItem.astro';
+import { getNews, newsCategories } from '../lib/data';
+
+const news = await getNews();
+const filters = [{ key: 'all', label: 'すべて' }, ...newsCategories];
+---
+
+<SiteLayout
+	title="News お知らせ｜榑田いつき KURETA Itsuki"
+	description="榑田いつき（KURETA Itsuki）のお知らせ一覧。作品の公開・配信、活動、サイト更新の情報。"
+	page="news"
+>
+	<main class="page-main">
+		<h1 class="section__heading page-title">
+			<span class="section__en" lang="en">NEWS</span>
+			<span class="section__ja">お知らせ</span>
+		</h1>
+
+		<div class="news-filter" data-news-filter hidden>
+			<div class="news-filter__buttons" role="group" aria-label="カテゴリで絞り込む">
+				{
+					filters.map((f, i) => (
+						<button type="button" class="news-filter__btn" data-filter={f.key} aria-pressed={i === 0 ? 'true' : 'false'}>
+							{f.label}
+						</button>
+					))
+				}
+			</div>
+			<p class="news-filter__status" data-news-status aria-live="polite"></p>
+		</div>
+
+		<div class="news-box news-box--page">
+			<ul class="news-list" data-news-list>
+				{news.map((n) => <NewsItem entry={n} />)}
+			</ul>
+			<p class="news-empty" data-news-empty hidden>このカテゴリのお知らせはまだありません。</p>
+		</div>
+	</main>
+</SiteLayout>
+
+<script>
+	const root = document.querySelector<HTMLElement>('[data-news-filter]');
+	const list = document.querySelector<HTMLElement>('[data-news-list]');
+	const empty = document.querySelector<HTMLElement>('[data-news-empty]');
+	const status = document.querySelector<HTMLElement>('[data-news-status]');
+	if (root && list && empty && status) {
+		const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+		const items = [...list.querySelectorAll<HTMLElement>('.news-item')];
+		const keys = buttons.map((b) => b.dataset.filter);
+
+		const apply = (key: string, updateUrl: boolean) => {
+			let shown = 0;
+			for (const item of items) {
+				const visible = key === 'all' || item.dataset.category === key;
+				item.hidden = !visible;
+				if (visible) shown++;
+			}
+			for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.filter === key));
+			// 見えている最後の項目だけ下の区切り線を消す（:last-child は hidden の項目も数えるため）
+			list.querySelector('.is-last')?.classList.remove('is-last');
+			items.filter((i) => !i.hidden).pop()?.classList.add('is-last');
+			empty.hidden = shown > 0;
+			status.textContent = `${shown}件`;
+			if (updateUrl) {
+				const url = new URL(location.href);
+				if (key === 'all') url.searchParams.delete('category');
+				else url.searchParams.set('category', key);
+				history.replaceState(null, '', url);
+			}
+		};
+
+		for (const b of buttons) b.addEventListener('click', () => apply(b.dataset.filter ?? 'all', true));
+
+		const initial = new URL(location.href).searchParams.get('category');
+		apply(initial && keys.includes(initial) ? initial : 'all', false);
+		root.hidden = false;
+	}
+</script>

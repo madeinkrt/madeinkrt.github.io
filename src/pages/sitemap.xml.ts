@@ -8,6 +8,7 @@ import { getWorks, workPath } from '../lib/data';
 const fixedPages: { path: string; lastmod: string }[] = [
 	{ path: '/', lastmod: '2026-11-18' },
 	{ path: '/works/', lastmod: '2026-11-18' },
+	{ path: '/news/', lastmod: '2026-11-18' },
 	{ path: '/about/', lastmod: '2026-11-17' },
 	{ path: '/contact/', lastmod: '2026-11-17' },
 ];
