@@ -37,5 +37,16 @@
     「Apple Music」の文字リンクが出る。
     並びはどちらも ニコニコ動画／YouTube／Spotify／Apple Music の順。未記入のものは出ない。
     （以前の streamingUrl は廃止しました。書いてもサイトには出ません）
+- youtubeMusicUrl: YouTube Music の URL。作品ページの「聴く・観る」に「YouTube Music で聴く」ボタンが出る。
+- amazonMusicUrl: Amazon Music のアルバム（シングル）ページの URL。「Amazon Music で聴く」ボタンが出る。
+- lineMusicUrl: LINE MUSIC のアルバム（シングル）ページの URL。「LINE MUSIC で聴く」ボタンが出る。
+- kkboxUrl: KKBOX のアルバム（シングル）ページの URL。「KKBOX で聴く」ボタンが出る。
+- moraUrl: mora のパッケージページの URL。「mora で聴く」ボタンが出る。
+- recochokuUrl: レコチョクのアルバム（シングル）ページの URL。「レコチョク で聴く」ボタンが出る。
+- kiiteUrl: Kiite の楽曲ページの URL。https://kiite.jp/song/<ID>/listed-by の形で書く（/song/<ID> だけだと 404 になる）。
+    「Kiite で聴く」ボタンが出る。
+    この7つは作品ページだけに出て、カードには出ない（カードは Spotify／Apple Music だけ）。
+    並びは Spotify／Apple Music の後に YouTube Music／Amazon Music／LINE MUSIC／KKBOX／mora／レコチョク／Kiite の順。
+    未記入のものは出ない。
 - fanboxUrl: FANBOX の記事 URL。既発表の作品は未記入でも FANBOX トップへの案内が出る。
     制作中の作品は、ここを書いたときだけ案内が出る。

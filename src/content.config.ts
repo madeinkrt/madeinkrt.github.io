@@ -68,6 +68,15 @@ const works = defineCollection({
 			// カードの鑑賞ボタンの横に小さな文字リンクが出る（既発表・制作中を問わず、設定の有無だけで決まる）
 			spotifyUrl: optionalUrl,
 			appleMusicUrl: optionalUrl,
+			// そのほかの配信の URL（WO-SITE-11）。設定したときだけ、作品ページの「聴く・観る」に「〇〇 で聴く」ボタンが出る。
+			// カードには出さない（カードは Spotify／Apple Music だけ。配信の全量は作品ページで案内する）
+			youtubeMusicUrl: optionalUrl,
+			amazonMusicUrl: optionalUrl,
+			lineMusicUrl: optionalUrl,
+			kkboxUrl: optionalUrl,
+			moraUrl: optionalUrl,
+			recochokuUrl: optionalUrl,
+			kiiteUrl: optionalUrl,
 			// FANBOX の URL。既発表の作品は未設定でも FANBOX トップへの案内を出す。制作中の作品は設定したときだけ出す
 			fanboxUrl: optionalUrl,
 		}),

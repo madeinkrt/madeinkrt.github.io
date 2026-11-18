@@ -28,16 +28,40 @@ export async function getWorks() {
 /** 作品ページの URL（/works/<作品 ID>/）。作品 ID は src/content/works のファイル名 */
 export const workPath = (work: Work) => `/works/${work.id}/`;
 
+type StreamingLink = { service: string; url: string };
+const hasUrl = (l: { service: string; url?: string }): l is StreamingLink => !!l.url;
+
 /**
- * 配信リンク（WO-SITE-09）。設定のあるものだけを Spotify → Apple Music の順で返す。
- * 作品ページ（ボタン）とカード（小さな文字リンク）で同じ並びを使う。
+ * カード用の配信リンク（WO-SITE-09）。設定のあるものだけを Spotify → Apple Music の順で返す。
+ * カード（小さな文字リンク）はこの2つだけに絞る（カードを重くしない）。
  */
 export function streamingLinks(work: Work) {
 	const { spotifyUrl, appleMusicUrl } = work.data;
 	return [
 		{ service: 'Spotify', url: spotifyUrl },
 		{ service: 'Apple Music', url: appleMusicUrl },
-	].filter((l): l is { service: string; url: string } => !!l.url);
+	].filter(hasUrl);
+}
+
+/**
+ * 作品ページ用の配信リンク（WO-SITE-11）。カードと同じ Spotify → Apple Music の後に、
+ * YouTube Music → Amazon Music → LINE MUSIC → KKBOX → mora → レコチョク → Kiite の順で、設定のあるものだけを返す。
+ * 配信の全量は作品ページをハブとして案内する。
+ */
+export function allStreamingLinks(work: Work) {
+	const { youtubeMusicUrl, amazonMusicUrl, lineMusicUrl, kkboxUrl, moraUrl, recochokuUrl, kiiteUrl } = work.data;
+	return [
+		...streamingLinks(work),
+		...[
+			{ service: 'YouTube Music', url: youtubeMusicUrl },
+			{ service: 'Amazon Music', url: amazonMusicUrl },
+			{ service: 'LINE MUSIC', url: lineMusicUrl },
+			{ service: 'KKBOX', url: kkboxUrl },
+			{ service: 'mora', url: moraUrl },
+			{ service: 'レコチョク', url: recochokuUrl },
+			{ service: 'Kiite', url: kiiteUrl },
+		].filter(hasUrl),
+	];
 }
 
 export async function getLinks() {

@@ -4,7 +4,7 @@
 import { Image, getImage } from 'astro:assets';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import LinkPill from '../../components/top/LinkPill.astro';
-import { getWorks, streamingLinks, workPath, type Work } from '../../lib/data';
+import { getWorks, allStreamingLinks, workPath, type Work } from '../../lib/data';
 
 export async function getStaticPaths() {
 	const { all } = await getWorks();
@@ -32,10 +32,11 @@ const releaseDateText = releaseDate
 	: undefined;
 
 // 鑑賞リンク：カードと同じく既発表の作品だけ出す。
-// 続けて配信リンク（設定のあるものだけ）を足す。並びはニコニコ動画／YouTube／Spotify／Apple Music（WO-SITE-09）
+// 続けて配信リンク（設定のあるものだけ）を足す。並びはニコニコ動画／YouTube／Spotify／Apple Music（WO-SITE-09）、
+// その後に YouTube Music／Amazon Music／LINE MUSIC／KKBOX／mora／レコチョク／Kiite（WO-SITE-11）
 const watchLinks = [
 	...(released ? links.map((l) => ({ ...l, aria: l.url ? `『${title}』を${l.label}で見る` : undefined })) : []),
-	...streamingLinks(work).map((s) => ({
+	...allStreamingLinks(work).map((s) => ({
 		label: `${s.service} で聴く`,
 		url: s.url,
 		aria: `『${title}』を ${s.service} で聴く`,
