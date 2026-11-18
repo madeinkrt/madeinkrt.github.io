@@ -1282,12 +1282,7 @@ a.pill:focus-visible,
    WO-SITE-08：作品ページ（/works/<ID>/）と、カードからの導線
    ════════════════════════════════════════════ */
 
-/* ── 作品カード：ジャケットと曲名を作品ページへのリンクに ── */
-.work-card__jacket-link {
-	display: block;
-	width: 100%;
-	height: 100%;
-}
+/* ── 作品カード：曲名を作品ページへのリンクに ── */
 .work-card__title-link {
 	text-decoration: none;
 }
@@ -1474,4 +1469,44 @@ a.pill:focus-visible,
 		background: #fff;
 		border-color: var(--pink);
 	}
+}
+
+/* ════════════════════════════════════════════
+   WO-SITE-10：カード全体タップ（stretched-link）と NEXT RELEASE の導線
+   ════════════════════════════════════════════ */
+
+/* 曲名リンクの ::after を、いちばん近い position 付きの祖先（カード・行）いっぱいに広げる。
+   リンク（Tab 移動・読み上げ）は曲名 1つのまま、タップできる範囲だけを広げる。 */
+.stretched-link::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border-radius: inherit;
+}
+.work-card,
+.next-card,
+.later-list li,
+.wip-item {
+	position: relative;
+}
+
+/* カード内の各サービスへのリンク（鑑賞ボタン・配信リンク・本文中のリンク）は広がりの上に重ね、
+   それぞれ単独で押せるようにする（行き先は各サービスのまま） */
+.work-card__links a,
+.work-card__text a {
+	position: relative;
+	z-index: 2;
+}
+
+/* NEXT RELEASE：見た目は文字のまま（下線・色を足さない）。キーボード操作時だけ枠を出す */
+.next-card__link,
+.later-list__link {
+	text-decoration: none;
+}
+.next-card__link:focus-visible,
+.later-list__link:focus-visible {
+	outline: 3px solid var(--pink-deep);
+	outline-offset: 2px;
+	border-radius: 6px;
 }

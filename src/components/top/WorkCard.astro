@@ -3,7 +3,8 @@
 //  - variant="row"  : トップ用。スマホではジャケット左・文字右の横長。
 //  - variant="tile" : Works 用。ジャケットを大きく上に出す。id（作品 ID）付きで /works/#lantana のように飛べる。
 // 曲名は画像任せにせず、必ず文字（見出し）で出す。
-// ジャケットと曲名は作品ページ（/works/<ID>/）へのリンク。鑑賞ボタンは各サービスへの直接リンクのまま（WO-SITE-08）。
+// 曲名は作品ページ（/works/<ID>/）へのリンク。stretched-link でカード全体をタップ領域に広げる（WO-SITE-10）。
+// 鑑賞ボタン・配信リンクは各サービスへの直接リンクのまま、広がりの上に重ねて個別に押せるようにする。
 // 仕掛け⑦（モチーフ）：ホバー／タップで軽く浮き上がる（CSS のみ）。
 import { Image } from 'astro:assets';
 import { render } from 'astro:content';
@@ -32,25 +33,24 @@ const imgWidths = [96, 192, 300, 400, 600];
 ---
 
 <article class:list={['work-card', `work-card--${variant}`, { 'work-card--wip': !released }]} id={anchor ? work.id : undefined}>
-	<div class="work-card__jacket">
-		{/* 行き先は曲名のリンクと同じなので、Tab 移動と読み上げは曲名側だけにする */}
-		<a class="work-card__jacket-link" href={href} tabindex="-1" aria-hidden="true">
-			{
-				jacket ? (
-					<Image src={jacket} alt={`『${title}』ジャケット`} widths={imgWidths} sizes={imgSizes} />
-				) : (
-					<div class="jacket-placeholder">
-						<span>JACKET</span>
-						<small>準備中</small>
-					</div>
-				)
-			}
-		</a>
+	{/* ジャケットは曲名リンクの広がり（stretched-link）でタップできるので、リンクにしない。
+	    読み上げは従来どおり曲名側だけにする（装飾扱い） */}
+	<div class="work-card__jacket" aria-hidden="true">
+		{
+			jacket ? (
+				<Image src={jacket} alt={`『${title}』ジャケット`} widths={imgWidths} sizes={imgSizes} />
+			) : (
+				<div class="jacket-placeholder">
+					<span>JACKET</span>
+					<small>準備中</small>
+				</div>
+			)
+		}
 	</div>
 	<div class="work-card__body">
 		{label && <p class="work-card__label" lang="en">{label}</p>}
 		<h3 class="work-card__title">
-			<a class="work-card__title-link" href={href}>{title}</a>
+			<a class="work-card__title-link stretched-link" href={href}>{title}</a>
 		</h3>
 		{target && <p class="target-badge target-badge--small">{target}</p>}
 		{

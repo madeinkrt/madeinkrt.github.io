@@ -9,9 +9,10 @@ import SleepyHedgehog from '../components/top/SleepyHedgehog.astro';
 import FloatingMotifs from '../components/top/FloatingMotifs.astro';
 import WorkCard from '../components/top/WorkCard.astro';
 import belly from '../assets/hedgehog/belly.png';
-import { getWorks } from '../lib/data';
+import { getWorks, workPath } from '../lib/data';
 
 const { released, targeted, untargeted } = await getWorks();
+// NEXT RELEASE の各作品は、曲名から作品ページへ（stretched-link で next-card・各行の全体をタップ領域にする。WO-SITE-10）
 // 目標表記のある制作中作品の先頭を NEXT RELEASE に、残りを「その先に」に出す。
 // 目標表記のない制作中作品（日程未定）は、日程を出さずに「ほかに制作中」に出す。
 const [next, ...later] = targeted;
@@ -46,7 +47,9 @@ const fmtDate = (d: Date) => `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1
 							</div>
 							<div class="next-card__body">
 								{next.data.label && <p class="next-card__label" lang="en">{next.data.label}</p>}
-								<p class="next-card__title">『{next.data.title}』</p>
+								<p class="next-card__title">
+									<a class="next-card__link stretched-link" href={workPath(next)}>『{next.data.title}』</a>
+								</p>
 								{next.data.target && <p class="target-badge">{next.data.target}</p>}
 								{NextContent && <div class="next-card__text"><NextContent /></div>}
 							</div>
@@ -59,7 +62,9 @@ const fmtDate = (d: Date) => `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1
 									<li>
 										<span class="later-list__lead">その先に</span>
 										{w.data.label && <span lang="en">{w.data.label}</span>}
-										<span class="later-list__title">『{w.data.title}』</span>
+										<span class="later-list__title">
+											<a class="later-list__link stretched-link" href={workPath(w)}>『{w.data.title}』</a>
+										</span>
 										{w.data.target && <span class="target-badge target-badge--small">{w.data.target}</span>}
 									</li>
 								))}
@@ -78,7 +83,9 @@ const fmtDate = (d: Date) => `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1
 										<span class="wip-item__body">
 											<span class="later-list__lead">ほかに制作中</span>
 											{w.data.label && <span class="wip-item__label" lang="en">{w.data.label}</span>}
-											<span class="later-list__title">『{w.data.title}』</span>
+											<span class="later-list__title">
+												<a class="later-list__link stretched-link" href={workPath(w)}>『{w.data.title}』</a>
+											</span>
 										</span>
 									</li>
 								))}
