@@ -67,10 +67,12 @@ export function allStreamingLinks(work: Work) {
 export type News = CollectionEntry<'news'>;
 export type NewsCategory = News['data']['category'];
 
-/** NEWS のカテゴリ（WO-SITE-12）。並び順は /news/ の絞り込みボタンの順 */
+/** NEWS のカテゴリ（WO-SITE-13 で内容別の5分類に）。並び順は /news/ の絞り込みボタンの順 */
 export const newsCategories: { key: NewsCategory; label: string }[] = [
-	{ key: 'news', label: 'お知らせ' },
-	{ key: 'activity', label: '活動' },
+	{ key: 'release', label: 'リリース' },
+	{ key: 'info', label: 'お知らせ' },
+	{ key: 'writing', label: '文章' },
+	{ key: 'fanbox', label: 'FANBOX' },
 	{ key: 'site', label: 'サイト更新' },
 ];
 export const newsCategoryLabel = (key: NewsCategory) => newsCategories.find((c) => c.key === key)?.label ?? key;

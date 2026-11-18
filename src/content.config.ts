@@ -87,9 +87,13 @@ const news = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		date: z.coerce.date(),
-		// カテゴリ（WO-SITE-12）。news = お知らせ / activity = 活動 / site = サイト更新
-		// 表示ラベルは src/lib/data.ts の newsCategories。未設定・空欄なら news（お知らせ）
-		category: z.preprocess(emptyToUndefined, z.enum(['news', 'activity', 'site']).default('news')),
+		// カテゴリ（WO-SITE-13 で内容別の5分類に）。
+		// release = リリース / info = お知らせ / writing = 文章 / fanbox = FANBOX / site = サイト更新
+		// 表示ラベルは src/lib/data.ts の newsCategories。未設定・空欄なら info（お知らせ）
+		category: z.preprocess(
+			emptyToUndefined,
+			z.enum(['release', 'info', 'writing', 'fanbox', 'site']).default('info'),
+		),
 	}),
 });
 

@@ -3,7 +3,7 @@
 // カテゴリの絞り込みは下の小さなスクリプトで行う。
 //  - HTML には全件をそのまま書き出す。JavaScript が無効でも全件が見える
 //  - 絞り込みボタンは hidden で書き出し、スクリプトが動いたときだけ表示する（押しても何も起きないボタンを見せない）
-//  - 選んだカテゴリは ?category=activity の形で URL に残す（そのまま共有・再読み込みできる）
+//  - 選んだカテゴリは ?category=release の形で URL に残す（そのまま共有・再読み込みできる）
 import SiteLayout from '../layouts/SiteLayout.astro';
 import NewsItem from '../components/site/NewsItem.astro';
 import { getNews, newsCategories } from '../lib/data';
@@ -14,7 +14,7 @@ const filters = [{ key: 'all', label: 'すべて' }, ...newsCategories];
 
 <SiteLayout
 	title="News お知らせ｜榑田いつき KURETA Itsuki"
-	description="榑田いつき（KURETA Itsuki）のお知らせ一覧。作品の公開・配信、活動、サイト更新の情報。"
+	description="榑田いつき（KURETA Itsuki）のお知らせ一覧。作品のリリース・配信、お知らせ、文章、FANBOX、サイト更新の情報。"
 	page="news"
 >
 	<main class="page-main">
