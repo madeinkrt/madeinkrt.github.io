@@ -31,6 +31,11 @@
           - 作詞・作曲・編曲・絵・動画：榑田いつき
 - intro: 作品ページの紹介文。SNS で共有したときの説明文にもなる（未記入なら「榑田いつき - 1st Single『ランタナ』」の形）。
 - piaproUrl: piapro（歌詞・インスト）の URL。「piapro で見る」ボタンが出る。
-- streamingUrl: 配信の URL。「聴く・観る」に「配信で聴く」ボタンが出る。
+- spotifyUrl: Spotify のアルバム（シングル）ページの URL。作品ページの「聴く・観る」に「Spotify で聴く」ボタン、
+    カードの鑑賞ボタンの横に小さな「Spotify」の文字リンクが出る。
+- appleMusicUrl: Apple Music のアルバム（シングル）ページの URL。同じく「Apple Music で聴く」ボタンと
+    「Apple Music」の文字リンクが出る。
+    並びはどちらも ニコニコ動画／YouTube／Spotify／Apple Music の順。未記入のものは出ない。
+    （以前の streamingUrl は廃止しました。書いてもサイトには出ません）
 - fanboxUrl: FANBOX の記事 URL。既発表の作品は未記入でも FANBOX トップへの案内が出る。
     制作中の作品は、ここを書いたときだけ案内が出る。

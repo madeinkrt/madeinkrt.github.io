@@ -8,7 +8,7 @@
 import { Image } from 'astro:assets';
 import { render } from 'astro:content';
 import LinkPill from './LinkPill.astro';
-import { workPath, type Work } from '../../lib/data';
+import { streamingLinks, workPath, type Work } from '../../lib/data';
 
 interface Props {
 	work: Work;
@@ -22,6 +22,10 @@ const { Content } = await render(work);
 const hasBody = !!work.body?.trim();
 const released = status === 'released';
 const href = workPath(work);
+// 鑑賞ボタン（ニコニコ動画／YouTube）は既発表の作品だけ。配信（Spotify／Apple Music）は設定があるときだけ、
+// ボタンにせず小さな文字リンクで並びの後ろに足す（カードを重くしない。WO-SITE-09）
+const watchLinks = released ? links : [];
+const streams = streamingLinks(work);
 // 表示幅：スマホは row = 96px／tile = 画面の約半分、640px 以上はどちらもカード幅（約 300px）
 const imgSizes = variant === 'tile' ? '(min-width: 640px) 300px, 46vw' : '(min-width: 640px) 300px, 96px';
 const imgWidths = [96, 192, 300, 400, 600];
@@ -57,11 +61,20 @@ const imgWidths = [96, 192, 300, 400, 600];
 			)
 		}
 		{
-			released && links.length > 0 && (
+			(watchLinks.length > 0 || streams.length > 0) && (
 				<div class="work-card__links">
-					{links.map((l) => (
+					{watchLinks.map((l) => (
 						<LinkPill label={l.label} url={l.url} ariaLabel={l.url ? `『${title}』を${l.label}で見る` : undefined} />
 					))}
+					{streams.length > 0 && (
+						<span class="work-card__stream">
+							{streams.map((s) => (
+								<a href={s.url} target="_blank" rel="noopener" aria-label={`『${title}』を ${s.service} で聴く`}>
+									{s.service}
+								</a>
+							))}
+						</span>
+					)}
 				</div>
 			)
 		}

@@ -13,4 +13,6 @@ releaseDate: 2026-02-20
 credits:
   - 唄：宮舞モカ
   - 作詞・作曲・編曲・絵・動画：榑田いつき
+spotifyUrl: https://open.spotify.com/intl-ja/album/0QGYfskCX1Hj8X4rdupIQx
+appleMusicUrl: https://music.apple.com/jp/album/jail-single/1882659547
 ---

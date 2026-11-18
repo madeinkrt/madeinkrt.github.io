@@ -13,4 +13,6 @@ releaseDate: 2025-12-19
 credits:
   - 唄：弦巻マキ・宮舞モカ
   - 作詞・作曲・編曲・絵・動画：榑田いつき
+spotifyUrl: https://open.spotify.com/intl-ja/album/0jfcHYXlCysMrHp3GKMlBI
+appleMusicUrl: https://music.apple.com/jp/album/lantana-feat-%E5%BC%A6%E5%B7%BB%E3%83%9E%E3%82%AD-miyamai-moca-single/1869554475
 ---

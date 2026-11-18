@@ -28,6 +28,18 @@ export async function getWorks() {
 /** 作品ページの URL（/works/<作品 ID>/）。作品 ID は src/content/works のファイル名 */
 export const workPath = (work: Work) => `/works/${work.id}/`;
 
+/**
+ * 配信リンク（WO-SITE-09）。設定のあるものだけを Spotify → Apple Music の順で返す。
+ * 作品ページ（ボタン）とカード（小さな文字リンク）で同じ並びを使う。
+ */
+export function streamingLinks(work: Work) {
+	const { spotifyUrl, appleMusicUrl } = work.data;
+	return [
+		{ service: 'Spotify', url: spotifyUrl },
+		{ service: 'Apple Music', url: appleMusicUrl },
+	].filter((l): l is { service: string; url: string } => !!l.url);
+}
+
 export async function getLinks() {
 	const all = (await getCollection('links')).sort(byOrder);
 	return {

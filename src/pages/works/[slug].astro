@@ -4,7 +4,7 @@
 import { Image, getImage } from 'astro:assets';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import LinkPill from '../../components/top/LinkPill.astro';
-import { getWorks, workPath, type Work } from '../../lib/data';
+import { getWorks, streamingLinks, workPath, type Work } from '../../lib/data';
 
 export async function getStaticPaths() {
 	const { all } = await getWorks();
@@ -20,8 +20,7 @@ interface Props {
 	next?: Work;
 }
 const { work, prev, next } = Astro.props;
-const { title, label, status, target, jacket, links, releaseDate, credits, intro, piaproUrl, streamingUrl, fanboxUrl } =
-	work.data;
+const { title, label, status, target, jacket, links, releaseDate, credits, intro, piaproUrl, fanboxUrl } = work.data;
 const released = status === 'released';
 
 // feat. 表記：クレジットの「唄：」の行から作る（専用の項目は持たない）
@@ -32,10 +31,15 @@ const releaseDateText = releaseDate
 	? (([y, m, d]) => `${y}年${m}月${d}日`)(releaseDate.split('-').map(Number))
 	: undefined;
 
-// 鑑賞リンク：カードと同じく既発表の作品だけ出す。配信 URL があれば「配信で聴く」を足す
+// 鑑賞リンク：カードと同じく既発表の作品だけ出す。
+// 続けて配信リンク（設定のあるものだけ）を足す。並びはニコニコ動画／YouTube／Spotify／Apple Music（WO-SITE-09）
 const watchLinks = [
 	...(released ? links.map((l) => ({ ...l, aria: l.url ? `『${title}』を${l.label}で見る` : undefined })) : []),
-	...(streamingUrl ? [{ label: '配信で聴く', url: streamingUrl, aria: `『${title}』を配信で聴く` }] : []),
+	...streamingLinks(work).map((s) => ({
+		label: `${s.service} で聴く`,
+		url: s.url,
+		aria: `『${title}』を ${s.service} で聴く`,
+	})),
 ];
 
 // FANBOX：既発表は常に出す（URL 未設定なら FANBOX トップ）。制作中は URL を設定したときだけ

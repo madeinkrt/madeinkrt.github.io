@@ -64,8 +64,10 @@ const works = defineCollection({
 			intro: z.preprocess(emptyToUndefined, z.string().optional()),
 			// piapro（歌詞・インスト）の URL
 			piaproUrl: optionalUrl,
-			// 配信（サブスク等）の URL。「配信で聴く」ボタンになる
-			streamingUrl: optionalUrl,
+			// 配信の URL（WO-SITE-09）。設定したときだけ、作品ページに「Spotify で聴く」「Apple Music で聴く」ボタン、
+			// カードの鑑賞ボタンの横に小さな文字リンクが出る（既発表・制作中を問わず、設定の有無だけで決まる）
+			spotifyUrl: optionalUrl,
+			appleMusicUrl: optionalUrl,
 			// FANBOX の URL。既発表の作品は未設定でも FANBOX トップへの案内を出す。制作中の作品は設定したときだけ出す
 			fanboxUrl: optionalUrl,
 		}),
