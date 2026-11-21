@@ -9,7 +9,7 @@ import { getWorks } from '../lib/data';
 // 作品データとの食い違いに気づけるよう、作品名が確定文に含まれているかだけビルド時に確認する。
 // 表示は変えない。作品が増えたり名前が変わったら、確定文の更新を制作者に確認すること。
 const musicText =
-	'1st Single『ランタナ』、2nd Single『JAIL』を発表済み。制作中は3rd『兎葵燕麥』、4th『はりねずみの杉山』、5th『昴』で、4thは杉山がモチーフですが、ハリネズミは飼ったことがありません。';
+	'1st Single『ランタナ』、2nd Single『JAIL』、3rd Single『兎葵燕麥』を発表済み。制作中は4th『はりねずみの杉山』、5th『昴』で、4thは杉山がモチーフですが、ハリネズミは飼ったことがありません。';
 
 const { released, upcoming } = await getWorks();
 const missing = [...released, ...upcoming].filter((w) => !musicText.includes(`『${w.data.title}』`));
