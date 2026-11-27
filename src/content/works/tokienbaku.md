@@ -9,6 +9,10 @@ links:
     url: https://www.nicovideo.jp/watch/sm47070568
   - label: YouTube
     url: https://youtu.be/3uy8bU5S_qU
+  - label: piapro（歌詞）
+    url: https://piapro.jp/t/T9J7
+  - label: piapro（インスト）
+    url: https://piapro.jp/t/lKfI
 releaseDate: 2026-11-21
 credits:
   - 唄：宮舞モカ
